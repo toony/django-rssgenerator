@@ -14,14 +14,14 @@ setup(
     license = 'BSD License',
     description = 'A simple Django app to create and manage RSS feed.',
     long_description = open('README.txt').read(),
-    url = '',
+    url = 'https://github.com/toony/django-rssgenerator',
     author = 'Anthony Prades',
     author_email = 'toony.github@chezouam.net',
     classifiers = [
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License', # example license
+        'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2.6',
