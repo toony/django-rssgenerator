@@ -1,0 +1,11 @@
+<h1>{{ rss.title }}</h1><a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
+<ul>
+	<li>{{rss.description}}</li>
+	<ul>
+{% for item in rss.items_set.all %}
+		<li>{{ item.title }}</li>
+		<li>{{ item.link }}</li>
+		<li>{{ item.pub_date }}</li>
+{% endfor %}
+	</ul>
+</ul>

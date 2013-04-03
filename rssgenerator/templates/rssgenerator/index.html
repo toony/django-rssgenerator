@@ -1,0 +1,9 @@
+{% if all_rss %}
+    <ul>
+    {% for rss in all_rss %}
+        <li><a href="{% url 'rss:detail' rss.id %}">{{ rss.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No RSS stream are available.</p>
+{% endif %}

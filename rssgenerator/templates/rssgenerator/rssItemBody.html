@@ -1,0 +1,10 @@
+{% if description %}
+<p>{{ description }}</p>
+{% endif %}
+
+{% if links %}
+<p>
+{% for link in links %}<a href="{{ link.link }}"><img src="{{ link.link }}" /></a>
+{% endfor %}
+</p>
+{% endif %}
