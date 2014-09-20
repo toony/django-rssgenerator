@@ -14,6 +14,8 @@ class Items(models.Model):
 	link = models.URLField(max_length=1024, null=False)
 	pub_date = models.DateTimeField('date published', null=False)
 	summary = models.TextField(null=True, blank=True)
+	class Meta:
+		ordering = ["-pub_date"]
 	def __unicode__(self):
 		return self.title
 	
