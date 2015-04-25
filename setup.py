@@ -8,10 +8,10 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-rssgenerator',
-    version = '0.3',
+    version = '0.4',
     packages = ['rssgenerator'],
     include_package_data = True,
-    license = 'BSD License',
+    license = 'GNU GPLv3',
     description = 'A simple Django app to create and manage RSS feed.',
     long_description = open('README.txt').read(),
     url = 'https://github.com/toony/django-rssgenerator',
@@ -30,7 +30,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
-        "Django >= 1.5",
+        "Django >= 1.8",
         "PyRSS2Gen >= 1.1",
     ],
 )
