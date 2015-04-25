@@ -7,5 +7,7 @@ Build egg using: python setup.py sdist
 
 ## Docker
 Build docker container using: docker build .
+
 Then connect to: http://<container ip>/admin
+
 Default admin account: admin/admin
