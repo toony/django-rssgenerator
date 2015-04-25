@@ -6,7 +6,11 @@ A very simple RSS generator created for my personal needs and my first django fr
 Build egg using: python setup.py sdist
 
 ## Docker
-Build docker container using: docker build .
+Build docker container using: 
+```
+docker build -t toony/rssgenerator .
+docker run -d toony/rssgenerator
+```
 
 Then connect to: `http://<container ip>/admin`
 
