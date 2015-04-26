@@ -1,11 +1,10 @@
-<h1>{{ rss.title }}</h1><a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
+<h1>{{ rss.title }} - {{rss.items_set.all|length}} items</h1>
+<a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
+
 <ul>
-	<li>{{rss.description}}</li>
-	<ul>
 {% for item in rss.items_set.all %}
-		<li>{{ item.title }}</li>
-		<li>{{ item.link }}</li>
-		<li>{{ item.pub_date }}</li>
+        <li><a href="{{ item.link }}">{{ item.title }}</a> - {{ item.pub_date }}</li>
 {% endfor %}
-	</ul>
 </ul>
+
+<a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
