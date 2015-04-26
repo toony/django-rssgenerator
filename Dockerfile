@@ -56,7 +56,7 @@ RUN cd /opt \
     && echo '' >> settings.py \
     && echo 'MANAGERS = ADMINS' >> settings.py \
     && cd /opt/django_rssgenerator \
-    && rm -rf /opt/rssgenerator-srci \
+    && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
 
 VOLUME /opt/rssgenerator-data
