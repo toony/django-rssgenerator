@@ -59,7 +59,7 @@ RUN cd /opt \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
 
-VOLUME /opt/rssgenerator-data
+VOLUME ["/opt/rssgenerator-data", "/var/log"]
  
 EXPOSE 80
 CMD ["/run-rssgenerator.sh"]
