@@ -7,6 +7,7 @@ class LinksInline(admin.TabularInline):
 
 class ItemsAdmin(admin.ModelAdmin):
     inlines = [LinksInline]
+    search_fields =  ['title']
     
 class RssAdmin(admin.ModelAdmin):
     list_display = ('title', 'description')
