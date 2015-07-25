@@ -2,7 +2,7 @@
 
 __name__ = "RssToStream"
 __version__ = (1, 1, 0)
-__author__ = "Anthony Prades <toony@chezouam.net>"
+__author__ = "Anthony Prades <toony.github@chezouam.net>"
 
 _generator_name = __name__ + "-" + ".".join(map(str, __version__))
 
