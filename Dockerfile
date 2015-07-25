@@ -14,8 +14,8 @@ RUN apt-get update \
 RUN mkdir -p /etc/rssgenerator
 COPY docker/gunicorn_config.py /etc/rssgenerator/gunicorn_config.py
 
-COPY docker/run-rssgenerator.sh /run-rssgenerator.sh
-RUN chmod +x /run-rssgenerator.sh
+COPY docker/init-rssgenerator.sh /init-rssgenerator.sh
+RUN chmod +x /init-rssgenerator.sh
 
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
 COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
@@ -62,4 +62,6 @@ RUN cd /opt \
 VOLUME ["/opt/rssgenerator-data", "/var/log"]
  
 EXPOSE 80
-CMD ["/run-rssgenerator.sh"]
+
+ENTRYPOINT ["/init-rssgenerator.sh"]
+CMD ["/usr/bin/supervisord"]
