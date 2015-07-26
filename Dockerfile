@@ -50,6 +50,7 @@ RUN cd /opt \
     && sed -i -e "s#^\(TIME_ZONE =.\+$\)#TIME_ZONE = 'Europe/Paris'#" settings.py \
     && sed -i -e "s#^\(.\+'NAME': \).\+db.sqlite3.\+\$#\1'/opt/rssgenerator-data/rssgenerator.sqlite3'#" settings.py \
     && sed -i -e "s#^\(]$\)#    url(r'^rssgenerator/', include('rssgenerator.urls', namespace=\"rss\")),\n\1#" urls.py \
+    && echo "RSSGENERATOR_LOCAL_DATA = '/opt/rssgenerator-data/localData'" >> settings.py \
     && echo 'ADMINS = (' >> settings.py \
     && echo "('Anthony Prades', 'toony.github@chezouam.net')," >> settings.py \
     && echo ')' >> settings.py \
