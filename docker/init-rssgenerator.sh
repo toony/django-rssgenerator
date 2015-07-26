@@ -1,7 +1,7 @@
 #!/bin/bash
 
 finish() {
-    if [ $? -ne 0 ]; then
+    if [ $# -ne 0 ]; then
         exec $@
     fi
 
@@ -22,7 +22,7 @@ if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
     deactivate
 
     chown -R www-data:www-data /opt/rssgenerator-data
-    finish ${option} $@
+    finish
 fi
 
 case "${option}" in
