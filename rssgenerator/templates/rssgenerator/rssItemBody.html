@@ -1,10 +1,19 @@
+{% load staticfiles %}
+
 {% if description %}
 <p>{{ description }}</p>
 {% endif %}
 
 {% if links %}
 <p>
-{% for link in links %}<a href="{{ link.link }}"><img src="{{ link.link }}" /></a>
+{% for link in links %}
+	<a href="{{ link.link }}">
+	{% if link.storeLocaly %}
+		<img src="{% url 'rss:localstoreretriever' link.item.rss.id link.item.id link.id%}" />
+	{% else %}
+		<img src="{{ link.link }}" />
+	{% endif %}
+	</a>
 {% endfor %}
 </p>
 {% endif %}

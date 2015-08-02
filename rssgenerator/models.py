@@ -3,8 +3,7 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-import os
-import urllib
+import LocalStore
 
 
 class Rss(models.Model):
@@ -37,20 +36,9 @@ class Links(models.Model):
 def __storeLink(sender, instance, **kwargs):
     link = instance
     item = link.item
-    
-    storeDir = os.path.join(settings.RSSGENERATOR_LOCAL_DATA, str(item.rss.id))
-    storeDir = os.path.join(storeDir, str(item.id))
-    linkLocalName = os.path.join(storeDir, str(link.id))
-        
-    print str(link.id)+" "+str(link.storeLocaly)
+
     if not link.storeLocaly:
-        if os.path.exists(linkLocalName):
-            print 'delete local'+str(link.id)
-            os.remove(linkLocalName)
-        return
+		LocalStore.LocalStoreRetriever(item.rss.id, item.id, link).delete()
+		return
         
-    if not os.path.exists(storeDir):
-        os.makedirs(storeDir)
-            
-    linkDownloader = urllib.URLopener()
-    linkDownloader.retrieve(link.link, linkLocalName)
+    LocalStore.LocalStoreRetriever(item.rss.id, item.id, link).store()
