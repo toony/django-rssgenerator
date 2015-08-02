@@ -4,13 +4,13 @@ from rssgenerator.models import Rss
 
 urlpatterns = patterns('',
     url(r'^$', ListView.as_view(
-		queryset=Rss.objects.all(),
-		context_object_name='all_rss',
-		template_name='rssgenerator/index.html'
-		), name='index'),
+        queryset=Rss.objects.all(),
+        context_object_name='all_rss',
+        template_name='rssgenerator/index.html'
+        ), name='index'),
     url(r'^(?P<pk>\d+)/$', DetailView.as_view(
-		model=Rss,
-		template_name='rssgenerator/detail.html'
-		), name='detail'),
+        model=Rss,
+        template_name='rssgenerator/detail.html'
+        ), name='detail'),
     url(r'^(?P<rss_id>\d+)/rss/$', 'rssgenerator.views.rssstream', name='rssstream')
 )
