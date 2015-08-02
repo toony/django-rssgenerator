@@ -9,16 +9,11 @@ RUN apt-get update \
     virtualenv \
     nginx \
     supervisor \
+    libmagic1 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /etc/rssgenerator
 COPY docker/gunicorn_config.py /etc/rssgenerator/gunicorn_config.py
-
-COPY docker/init-rssgenerator.sh /init-rssgenerator.sh
-RUN chmod +x /init-rssgenerator.sh
-
-RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
-COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
 
 ADD docker/rssgenerator.nginx /etc/nginx/sites-available/rssgenerator
 RUN rm -f /etc/nginx/sites-enabled/default
@@ -59,6 +54,12 @@ RUN cd /opt \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
+
+RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
+COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
+
+COPY docker/init-rssgenerator.sh /init-rssgenerator.sh
+RUN chmod +x /init-rssgenerator.sh
 
 VOLUME ["/opt/rssgenerator-data", "/var/log"]
  

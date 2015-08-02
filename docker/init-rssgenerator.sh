@@ -8,16 +8,25 @@ finish() {
     exit 0
 }
 
-if [ $? -ne 0 ]; then
+manageDb() {
+    . /opt/rssgenerator-env/bin/activate
+
+    pushd /opt/django_rssgenerator
+    python manage.py migrate
+
+    chown www-data:www-data /opt/rssgenerator-data/rssgenerator.sqlite3
+    deactivate
+}
+
+if [ $# -ne 0 ]; then
     option=$1
     shift
 fi
 
 if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
-    . /opt/rssgenerator-env/bin/activate
+    manageDb
 
-    pushd /opt/django_rssgenerator
-    python manage.py migrate
+    . /opt/rssgenerator-env/bin/activate
     echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
     deactivate
 
@@ -27,7 +36,7 @@ fi
 
 case "${option}" in
     "update")
-        update
+        manageDb
         unset option
         ;;
 esac
