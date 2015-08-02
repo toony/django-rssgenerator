@@ -43,7 +43,7 @@ class LocalStoreRetriever:
         mime.from_file(self.linkFile)
         
     def delete(self):
-        print "Deleting: "+self.storePath
+        print "Deleting: "+self.linkFile
         if os.path.exists(self.linkFile):
             os.remove(self.linkFile)
             
