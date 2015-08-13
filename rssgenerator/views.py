@@ -12,4 +12,4 @@ def rssstream(request, rss_id):
 
 def localstoreretrieve(request, rss_id, item_id, link_id):
     localStore = LocalStore.LocalStore(rss_id, item_id, get_object_or_404(Links, id=link_id))
-    return HttpResponse(localStore.get(), localStore.mime())
+    return HttpResponse(localStore.get(), localStore.contentType())

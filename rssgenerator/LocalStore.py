@@ -35,12 +35,12 @@ class LocalStore:
             red = Image.new('RGBA', (1, 1), (255,0,0,0))
             return self.link.link
 
-    def mime(self):
+    def contentType(self):
         if not os.path.exists(self.linkFile):
             return
         
         mime = magic.Magic(mime=True)
-        mime.from_file(self.linkFile)
+        return mime.from_file(self.linkFile)
         
     def delete(self):
         print "Deleting: "+self.linkFile
