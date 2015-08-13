@@ -13,5 +13,5 @@ urlpatterns = patterns('',
         template_name='rssgenerator/detail.html'
         ), name='detail'),
     url(r'^(?P<rss_id>\d+)/rss/$', 'rssgenerator.views.rssstream', name='rssstream'),
-    url(r'^(?P<rss_id>\d+)/localStore/(?P<item_id>\d+)/(?P<link_id>\d+)/get$', 'rssgenerator.views.localstoreretriever', name='localstoreretriever')
+    url(r'^(?P<rss_id>\d+)/localStore/(?P<item_id>\d+)/(?P<link_id>\d+)/get$', 'rssgenerator.views.localstoreretrieve', name='localstoreretrieve')
 )

@@ -12,7 +12,7 @@ import os
 import magic
 import urllib
 
-class LocalStoreRetriever:
+class LocalStore:
     def __init__(self,
                  rssId,
                  itemId,

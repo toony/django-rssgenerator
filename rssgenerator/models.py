@@ -35,13 +35,13 @@ def __storeLink(sender, instance, **kwargs):
     item = link.item
     print "popop"
     if not link.storeLocaly:
-		LocalStore.LocalStoreRetriever(item.rss.id, item.id, link).delete()
+		LocalStore.LocalStore(item.rss.id, item.id, link).delete()
 		return
         
-    LocalStore.LocalStoreRetriever(item.rss.id, item.id, link).store()
+    LocalStore.LocalStore(item.rss.id, item.id, link).store()
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):
     link = instance
     item = link.item
-    LocalStore.LocalStoreRetriever(item.rss.id, item.id, link).delete()
+    LocalStore.LocalStore(item.rss.id, item.id, link).delete()
