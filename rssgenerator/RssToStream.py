@@ -14,12 +14,12 @@ from rssgenerator.models import Rss
 
 class RssToStream:
     def __init__(self,
-				 rootUri,
-				 rssUri,
+                 request,
                  rss):
-		self.rootUri = rootUri
-		self.rssUri = rssUri
-		self.rss = rss
+        print self.__getRootUri(request)
+        self.rootUri = request.build_absolute_uri("/")[:-1]
+        self.rssUri = request.build_absolute_uri()
+        self.rss = rss
         
     def __toStream(self):
         items = self.__getRssItems(self.rss.items_set.all())
@@ -54,3 +54,9 @@ class RssToStream:
 
     def display(self):
         return self.__toStream().to_xml(encoding = "utf-8")
+
+    def __getRootUri(self, request):
+        if  'X_SCHEME' in request.META and 'X_HOST' in request.META:
+            return request.META['X_SCHEME'] + "://" + request.META['X_HOST']
+            
+        return request.build_absolute_uri("/")[:-1]
