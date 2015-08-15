@@ -14,16 +14,18 @@ from rssgenerator.models import Rss
 
 class RssToStream:
     def __init__(self,
-                 rss,
-                 url):
-        self.rss = rss
-        self.url = url
+				 rootUri,
+				 rssUri,
+                 rss):
+		self.rootUri = rootUri
+		self.rssUri = rssUri
+		self.rss = rss
         
     def __toStream(self):
         items = self.__getRssItems(self.rss.items_set.all())
         rssStream = RSS2.RSS2(
                         title = self.rss.title,
-                        link = self.url,
+                        link = self.rssUri,
                         description = self.rss.description,
                         lastBuildDate = datetime.datetime.now(),
                         items = items)
@@ -34,6 +36,7 @@ class RssToStream:
         for item in items:
             template = loader.get_template('rssgenerator/rssItemBody.html')
             context = Context({
+				'rootUri' : self.rootUri,
                 'description': item.summary,
                 'links': item.links_set.all()
             })
