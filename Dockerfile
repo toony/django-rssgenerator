@@ -2,7 +2,6 @@ FROM debian:jessie
 MAINTAINER Anthony Prades <toony.github@chezouam.net>
 
 RUN apt-get update \
-    && apt-get upgrade -yq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
 	--no-install-recommends \
     python \
@@ -14,11 +13,6 @@ RUN apt-get update \
 
 RUN mkdir -p /etc/rssgenerator
 COPY docker/gunicorn_config.py /etc/rssgenerator/gunicorn_config.py
-
-ADD docker/rssgenerator.nginx /etc/nginx/sites-available/rssgenerator
-RUN rm -f /etc/nginx/sites-enabled/default
-RUN ln -s /etc/nginx/sites-available/rssgenerator /etc/nginx/sites-enabled/rssgenerator
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 RUN mkdir -p /opt/rssgenerator-src
 COPY rssgenerator /opt/rssgenerator-src/rssgenerator
@@ -54,6 +48,11 @@ RUN cd /opt \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
+
+ADD docker/rssgenerator.nginx /etc/nginx/sites-available/rssgenerator
+RUN rm -f /etc/nginx/sites-enabled/default
+RUN ln -s /etc/nginx/sites-available/rssgenerator /etc/nginx/sites-enabled/rssgenerator
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
 COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
