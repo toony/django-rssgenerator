@@ -4,8 +4,6 @@ finish() {
     if [ $# -ne 0 ]; then
         exec $@
     fi
-
-    exit 0
 }
 
 manageDb() {
