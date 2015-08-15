@@ -16,9 +16,8 @@ class RssToStream:
     def __init__(self,
                  request,
                  rss):
-        print self.__getRootUri(request)
-        self.rootUri = request.build_absolute_uri("/")[:-1]
-        self.rssUri = request.build_absolute_uri()
+        self.rootUri = self.__getRootUri(request)
+        self.rssUri = self.rootUri + "/" + request.build_absolute_uri()
         self.rss = rss
         
     def __toStream(self):
@@ -56,7 +55,7 @@ class RssToStream:
         return self.__toStream().to_xml(encoding = "utf-8")
 
     def __getRootUri(self, request):
-        if  'X_SCHEME' in request.META and 'X_HOST' in request.META:
-            return request.META['X_SCHEME'] + "://" + request.META['X_HOST']
+        if  'HTTP_X_SCHEME' in request.META and 'HTTP_X_HOST' in request.META:
+            return request.META['HTTP_X_SCHEME'] + "://" + request.META['HTTP_X_HOST']
             
         return request.build_absolute_uri("/")[:-1]
