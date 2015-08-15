@@ -55,7 +55,7 @@ class RssToStream:
         return self.__toStream().to_xml(encoding = "utf-8")
 
     def __getRootUri(self, request):
-        if  'HTTP_X_SCHEME' in request.META and 'HTTP_X_HOST' in request.META:
-            return request.META['HTTP_X_SCHEME'] + "://" + request.META['HTTP_X_HOST']
+        if  'HTTP_X_SCHEME' in request.META and 'HTTP_X_FORWARDED_HOST' in request.META:
+            return request.META['HTTP_X_SCHEME'] + "://" + request.META['HTTP_X_FORWARDED_HOST']
             
         return request.build_absolute_uri("/")[:-1]
