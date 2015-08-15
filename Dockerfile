@@ -9,6 +9,7 @@ RUN apt-get update \
     nginx \
     supervisor \
     libmagic1 \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /etc/rssgenerator
