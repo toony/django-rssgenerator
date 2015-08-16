@@ -3,7 +3,7 @@
 
 <ul>
 {% for item in rss.items_set.all %}
-        <li><a href="{{ item.link }}">{{ item.title }}</a> - {{ item.pub_date }}</li>
+        <li><a href="{{ item.link }}">{{ item.title }}</a> ({{item.links_set.all|length}} {% if item.links_set.all|length > 1 %} links {% else %} link {% endif %}) - {{ item.pub_date }}</li>
 {% endfor %}
 </ul>
 
