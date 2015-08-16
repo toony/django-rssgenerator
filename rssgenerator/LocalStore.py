@@ -17,8 +17,11 @@ class LocalStore:
                  rssId):
         self.storePath = os.path.join(settings.RSSGENERATOR_LOCAL_DATA, str(rssId))
         
+    def __getItemPath(self, itemId):
+        return os.path.join(self.storePath, str(itemId))
+        
     def __getLinkFilePath(self, itemId, link):
-        return os.path.join(self.storePath, str(itemId), str(link.id))
+        return os.path.join(self.__getItemPath(itemId), str(link.id))
 
     def get(self, itemId, link):
         if not link.storeLocaly:
@@ -39,16 +42,28 @@ class LocalStore:
         mime = magic.Magic(mime=True)
         return mime.from_file(linkFilePath)
         
+    def __removeItemPath(self, itemId):
+        itemPath = self.__getItemPath(itemId)
+        
+        try:
+            os.rmdir(itemPath)
+        except OSError:
+            pass
+        
     def delete(self, itemId, link): 
         linkFilePath = self.__getLinkFilePath(itemId, link)
         if not os.path.exists(linkFilePath):
+            self.__removeItemPath(itemId)
             return
                 
         os.remove(linkFilePath)
+        
+        self.__removeItemPath(itemId)
             
     def store(self, itemId, link):
-        if not os.path.exists(os.path.join(self.storePath, str(itemId))):
-            os.makedirs(os.path.join(self.storePath, str(itemId)))
+        itemPath = self.__getItemPath(itemId)
+        if not os.path.exists(itemPath):
+            os.makedirs(itemPath)
             
         linkDownloader = urllib.URLopener()
         linkDownloader.retrieve(link.link, self.__getLinkFilePath(itemId, link))
