@@ -45,6 +45,9 @@ RUN cd /opt \
     && echo ')' >> settings.py \
     && echo '' >> settings.py \
     && echo 'MANAGERS = ADMINS' >> settings.py \
+    && echo "STATIC_ROOT = '/opt/rssgenerator-data/static'" >> settings.py \
+    && cd /opt/django_rssgenerator \
+    && python manage.py collectstatic --noinput \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data

@@ -5,7 +5,7 @@ server {
   error_log /var/log/nginx/rssgenerator.error.log;
 
   location /static {
-    alias /opt/rssgenerator-env/lib/python2.7/site-packages/django/contrib/admin/static;
+    alias /opt/rssgenerator-data/static;
     expires 30d;
   }
 
