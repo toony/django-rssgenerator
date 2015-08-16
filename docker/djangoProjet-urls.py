@@ -5,5 +5,5 @@ from django.views.generic.base import RedirectView
 urlpatterns = [
     url(r'^rssgenerator/', include('rssgenerator.urls', namespace="rss")),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^.*$', RedirectView.as_view(pattern_name='rss:index', permanent=False), name='redirect'),
+    url(r'^$', RedirectView.as_view(pattern_name='rss:index', permanent=False), name='redirect'),
 ]
