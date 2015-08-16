@@ -1,3 +1,4 @@
 include LICENSE
 recursive-include rssgenerator/templates *
 recursive-include rssgenerator/migrations *
+recursive-include rssgenerator/static *
