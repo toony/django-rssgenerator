@@ -14,42 +14,41 @@ import urllib
 
 class LocalStore:
     def __init__(self,
-                 rssId,
-                 itemId,
-                 link):
-        self.rssId = rssId
-        self.link = link
+                 rssId):
+        self.storePath = os.path.join(settings.RSSGENERATOR_LOCAL_DATA, str(rssId))
         
-        self.linkFile = os.path.join(settings.RSSGENERATOR_LOCAL_DATA, str(rssId))
-        self.storePath = os.path.join(self.linkFile, str(itemId))
-        self.linkFile = os.path.join(self.storePath, str(link.id))
+    def __getLinkFilePath(self, itemId, link):
+        return os.path.join(self.storePath, str(itemId), str(link.id))
 
-    def get(self):
-        if not os.path.exists(self.linkFile):
-            return self.link.link
+    def get(self, itemId, link):
+        if not link.storeLocaly:
+            return link.link
+             
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkFilePath):
+            return link.link
         
-        try:
-            with open(self.linkFile, "rb") as f:
-                return f.read()
-        except IOError:
-            red = Image.new('RGBA', (1, 1), (255,0,0,0))
-            return self.link.link
+        with open(linkFilePath, "rb") as f:
+            return f.read()
 
-    def contentType(self):
-        if not os.path.exists(self.linkFile):
+    def contentType(self, itemId, link):
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkFilePath):
             return
         
         mime = magic.Magic(mime=True)
-        return mime.from_file(self.linkFile)
+        return mime.from_file(linkFilePath)
         
-    def delete(self):
-        print "Deleting: "+self.linkFile
-        if os.path.exists(self.linkFile):
-            os.remove(self.linkFile)
+    def delete(self, itemId, link): 
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkFilePath):
+            return
+                
+        os.remove(linkFilePath)
             
-    def store(self):
-        if not os.path.exists(self.storePath):
-            os.makedirs(self.storePath)
+    def store(self, itemId, link):
+        if not os.path.exists(os.path.join(self.storePath, str(itemId))):
+            os.makedirs(os.path.join(self.storePath, str(itemId)))
             
         linkDownloader = urllib.URLopener()
-        linkDownloader.retrieve(self.link.link, self.linkFile)
+        linkDownloader.retrieve(link.link, self.__getLinkFilePath(itemId, link))

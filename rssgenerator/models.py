@@ -33,15 +33,14 @@ class Links(models.Model):
 def __storeLink(sender, instance, **kwargs):
     link = instance
     item = link.item
-    print "popop"
     if not link.storeLocaly:
-		LocalStore.LocalStore(item.rss.id, item.id, link).delete()
+		LocalStore.LocalStore(item.rss.id).delete(item.id, link)
 		return
         
-    LocalStore.LocalStore(item.rss.id, item.id, link).store()
+    LocalStore.LocalStore(item.rss.id).store(item.id, link)
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):
     link = instance
     item = link.item
-    LocalStore.LocalStore(item.rss.id, item.id, link).delete()
+    LocalStore.LocalStore(item.rss.id).delete(item.id, link)
