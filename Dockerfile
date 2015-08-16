@@ -39,7 +39,6 @@ RUN cd /opt \
     && sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',/" settings.py \
     && sed -i -e "s#^\(TIME_ZONE =.\+$\)#TIME_ZONE = 'Europe/Paris'#" settings.py \
     && sed -i -e "s#^\(.\+'NAME': \).\+db.sqlite3.\+\$#\1'/opt/rssgenerator-data/rssgenerator.sqlite3'#" settings.py \
-    && sed -i -e "s#^\(]$\)#    url(r'^rssgenerator/', include('rssgenerator.urls', namespace=\"rss\")),\n\1#" urls.py \
     && echo "RSSGENERATOR_LOCAL_DATA = '/opt/rssgenerator-data/localData'" >> settings.py \
     && echo 'ADMINS = (' >> settings.py \
     && echo "('Anthony Prades', 'toony.github@chezouam.net')," >> settings.py \
@@ -49,6 +48,8 @@ RUN cd /opt \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
+
+COPY docker/djangoProjet-urls.py /opt/django_rssgenerator/django_rssgenerator/urls.py
 
 ADD docker/rssgenerator.nginx /etc/nginx/sites-available/rssgenerator
 RUN rm -f /etc/nginx/sites-enabled/default
