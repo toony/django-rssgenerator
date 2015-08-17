@@ -4,6 +4,7 @@ import LocalStore
 
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse
 
 from rssgenerator.models import Rss, Items, Links
 
@@ -22,7 +23,7 @@ def itemgallery(request, rss_id, item_id):
     
     itemGalleryIndex = []
     for link in item.links_set.all():
-        linkInfos = { 'src': link.link }
+        linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rss_id, item.id, link.id]) }
         linkInfos.update(localStore.info(item.id, link))
         itemGalleryIndex.append(linkInfos)
     
