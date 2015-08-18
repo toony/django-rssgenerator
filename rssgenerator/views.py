@@ -28,3 +28,16 @@ def itemgallery(request, rss_id, item_id):
         itemGalleryIndex.append(linkInfos)
     
     return HttpResponse(json.dumps(itemGalleryIndex), content_type="application/json")
+
+def rssgallery(request, rss_id):
+    rss = get_object_or_404(Rss, id=rss_id)
+    localStore = LocalStore.LocalStore(rss_id)
+
+    rssGalleryIndex = []
+    for item in rss.items_set.all():
+        for link in item.links_set.all():
+            linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rss.id, item.id, link.id]) }
+            linkInfos.update(localStore.info(item.id, link))
+            rssGalleryIndex.append(linkInfos)
+
+    return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")

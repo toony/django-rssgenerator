@@ -6,14 +6,16 @@
 </head>
 
 <body>
+    <div onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
     <h1>{{ rss.title }} - {{rss.items_set.all|length}} items</h1>
+    </div>
     <a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
 
     <ul>
     {% for item in rss.items_set.all %}
         <li><div
         {% if item.links_set.all|length > 0 %}
-        onclick="displayItemGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})"
+        onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})"
         {% endif %}>
         {{ item.title }}</div>
         <div>
@@ -102,7 +104,7 @@ var options = {
     index: 0 // start at first slide
 };
     
-function displayItemGallery(infoUrl, itemId) {
+function displayGallery(infoUrl, itemId) {
     $.getJSON(infoUrl, function(galleryInfos) {
         var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
         gallery.init();
