@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en_US">
 <head>
     <link rel="stylesheet" href="/static/detail.css">
     <link rel="stylesheet" href="/static/PhotoSwipe/photoswipe.css">
@@ -8,13 +9,15 @@
 
 <body>
     <div id="header">
-        <div id="bandeau" onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
-            <p>{{ rss.title }} - {{rss.items_set.all|length}} items</p>
-            <a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
+        <div onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
+            <p id="headerTitle">{{ rss.title }} - {{rss.items_set.all|length}} items</p>
+        </div>
+        <div onclick="location.href='{% url 'rss:rssstream' rss.id %}';">
+            <p id="headerSubscribe">subscribe</p>
         </div>
     </div>
     
-    <div id="body">
+    <div id="content">
         <ul>
         {% for item in rss.items_set.all %}
             <li>
