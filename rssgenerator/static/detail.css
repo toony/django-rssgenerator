@@ -1,0 +1,22 @@
+#bandeau {
+    border : 2px solid black;
+    text-align : center;
+    background-color : lightgreen;
+    height : 90px;
+}
+
+#header {
+    position : fixed;
+    width : 100%;
+    top : 0;
+    left:0;
+}
+
+#body {
+    margin : 100px 0 0 0;
+    text-align : justify;
+}
+
+body {
+    margin: 0px;
+}

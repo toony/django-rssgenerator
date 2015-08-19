@@ -1,30 +1,36 @@
 <html>
 <head>
+    <link rel="stylesheet" href="/static/detail.css">
     <link rel="stylesheet" href="/static/PhotoSwipe/photoswipe.css">
     <link rel="stylesheet" href="/static/PhotoSwipe/default-skin/default-skin.css">
     <title>{{ rss.title }} - {{rss.items_set.all|length}} items</title>
 </head>
 
 <body>
-    <div onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
-    <h1>{{ rss.title }} - {{rss.items_set.all|length}} items</h1>
-    </div>
-    <a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
-
-    <ul>
-    {% for item in rss.items_set.all %}
-        <li><div
-        {% if item.links_set.all|length > 0 %}
-        onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})"
-        {% endif %}>
-        {{ item.title }}</div>
-        <div>
-        ({{item.links_set.all|length}}{% if item.links_set.all|length > 1 %} links{% else %} link{% endif %}) - {{ item.pub_date }}</li>
+    <div id="header">
+        <div id="bandeau" onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
+            <p>{{ rss.title }} - {{rss.items_set.all|length}} items</p>
+            <a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
         </div>
-    {% endfor %}
-    </ul>
-
-    <a href="{% url 'rss:rssstream' rss.id %}">subscribe</a>
+    </div>
+    
+    <div id="body">
+        <ul>
+        {% for item in rss.items_set.all %}
+            <li>
+                <div
+                {% if item.links_set.all|length > 0 %}
+                onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})"
+                {% endif %}
+                >
+                {{ item.title }}</div>
+                <div>
+                ({{item.links_set.all|length}}{% if item.links_set.all|length > 1 %} links{% else %} link{% endif %}) - {{ item.pub_date }}
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
     
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
