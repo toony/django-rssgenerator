@@ -99,6 +99,8 @@ body {
 
 .itemTitle {
     margin: 0;
+    overflow:hidden;
+    max-height: 40px;
 }
 
 .itemDate {
