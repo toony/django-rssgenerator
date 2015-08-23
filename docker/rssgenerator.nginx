@@ -5,7 +5,7 @@ server {
   error_log /var/log/nginx/rssgenerator.error.log;
 
   location /static {
-    alias /opt/rssgenerator-data/static;
+    alias /opt/rssgenerator-static;
     expires 30d;
   }
 
