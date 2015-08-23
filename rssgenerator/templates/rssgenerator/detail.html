@@ -32,9 +32,12 @@
                     <img class="itemImage" src="/static/noLinks.png"/>
                 {% endif %}
                 </div>
+                <div class="divTableCelRightParent">
                 <div class="divTableCelRight">
                     <p class="itemTitle">{{item.title}}</p>
                     <p class="itemDate">{{ item.pub_date }}</p>
+                    <p class="itemSummary">{{ item.summary }}</p>
+                </div>
                 </div>
             </div>
         {% endfor %}

@@ -68,17 +68,25 @@ body {
     left: 9px;
     height: 90px;
     position: absolute;
-    display: table-column;
     min-width: 90px;
     border: .5px solid black;
 }
 
-.divTableCelRight {
+.divTableCelRightParent {
     top: 5px;
     left: 105px;
     right: 5px;
     position: absolute;
-    display: table-column;
+    max-height: 90px;
+    height: 90px;
+    overflow: hidden;
+}
+
+.divTableCelRight {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    padding-right: 15px;
 }
 
 .itemImage {
@@ -100,11 +108,16 @@ body {
 
 .itemTitle {
     margin: 0;
-    overflow:hidden;
     max-height: 40px;
+    overflow: hidden;
 }
 
 .itemDate {
+    margin: 0 0 7px 0;
+    font-size: .65em;
+}
+
+.itemSummary {
     margin: 0;
     font-size: .75em;
 }
