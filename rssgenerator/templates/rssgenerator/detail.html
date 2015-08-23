@@ -10,29 +10,36 @@
 <body>
     <div id="header">
         <div onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
-            <p id="headerTitle">{{ rss.title }} - {{rss.items_set.all|length}} items</p>
+            <p id="headerTitle">{{ rss.title }} - {{rss.items_set.all.count}} items</p>
         </div>
-        <div onclick="location.href='{% url 'rss:rssstream' rss.id %}';">
-            <p id="headerSubscribe">subscribe</p>
+        <div id="headerSubscribe" onclick="location.href='{% url 'rss:rssstream' rss.id %}';">
+            <p>subscribe</p>
         </div>
     </div>
     
-    <div id="content">
-        <ul>
+    <div id="content" class="divTable">
         {% for item in rss.items_set.all %}
-            <li>
-                <div
-                {% if item.links_set.all|length > 0 %}
-                onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})"
-                {% endif %}
-                >
-                {{ item.title }}</div>
-                <div>
-                ({{item.links_set.all|length}}{% if item.links_set.all|length > 1 %} links{% else %} link{% endif %}) - {{ item.pub_date }}
+            <div class="divTableRow">
+                <div class="divTableCels">
+                    {% if item.links_set.all.count > 0 %}
+                    <div class="divTableCelLeft"
+                        onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})">
+                        <img class="itemImage" src="{% url 'rss:localstoreretrieve' rss.id item.id item.links_set.first.id %}"/>
+                    {% else %}
+                    <div class="divTableCelLeft">
+                        <img class="itemImage" src="/static/noLinks.png"/>
+                    {% endif %}
+                    </div>
+                    <div class="divTableCelRight">
+                        <p class="itemTitle">{{item.title}}</p>
+                        <p class="itemDate">{{ item.pub_date }}</p>
+                        {% if item.links_set.all.count >= 1 %}
+                        <p>{{item.links_set.all|length}}{% if item.links_set.all|length > 1 %} links{% else %} link{% endif %}</p>
+                        {% endif %}
+                    </div>
                 </div>
-            </li>
+            </div>
         {% endfor %}
-        </ul>
     </div>
     
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
@@ -103,17 +110,17 @@
     <!-- UI JS file -->
     <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
     
-    <script type="text/javascript">
-var pswpElement = document.querySelectorAll('.pswp')[0];
-
-// define options (if needed)
-var options = {
-    // optionName: 'option value'
-    // for example:
-    index: 0 // start at first slide
-};
-    
+    <script type="text/javascript">    
 function displayGallery(infoUrl, itemId) {
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+
+    // define options (if needed)
+    var options = {
+        // optionName: 'option value'
+        // for example:
+        index: 0 // start at first slide
+    };
+    
     $.getJSON(infoUrl, function(galleryInfos) {
         var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
         gallery.init();

@@ -1,3 +1,7 @@
+body {
+    margin: 0px;
+}
+
 #header {
     font-family: "Open Sans",sans-serif;
     color: #fff;
@@ -24,10 +28,14 @@
 }
 
 #headerSubscribe {
+    margin-top: 65px;
+}
+
+#headerSubscribe p {
+    margin: 0 3px 0 0;
     float: right;
     cursor: pointer;
     text-align: center;
-    margin-top: 50px;
     color: black;
 }
 
@@ -36,6 +44,53 @@
     text-align : justify;
 }
 
-body {
-    margin: 0px;
+.divTable {
+    display: table;
+    width: auto;
+    border-collapse: separate;
+    border-spacing: 3px;
+}
+
+.divTableRow {
+    display: table-row;
+    width: auto;
+    height: 100px;
+    clear: both;
+}
+
+.divTableCels {
+    position: relative;
+    border-radius: 20px;
+    border: 3px solid black;
+    height: 100px;
+    width: 300px;
+}
+
+.divTableCelLeft {
+    top: 5px;
+    left: 10px;
+    position: absolute;
+    display: table-column;
+}
+
+.divTableCelRight {
+    top: 5px;
+    left: 105px;
+    right: 5px;
+    position: absolute;
+    display: table-column;
+}
+
+.itemImage {
+    height: 90px;
+    width: 90px;
+}
+
+.itemTitle {
+    margin: 0;
+}
+
+.itemDate {
+    margin: 0;
+    font-size: .75em;
 }
