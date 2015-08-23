@@ -88,6 +88,10 @@ body {
     width: 90px;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .itemTitle {
     margin: 0;
 }
