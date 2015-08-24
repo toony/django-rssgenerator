@@ -1,5 +1,6 @@
 body {
     margin: 0px;
+    height: 100%;
 }
 
 #header {
@@ -41,16 +42,15 @@ body {
     color: black;
 }
 
-#content {
-    margin : 100px 0 0 0;
-    text-align : justify;
-}
-
 .divContent {
-    display: table;
-    width: auto;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 100px;
+    bottom: 0;
     border-collapse: separate;
     clear: both;
+    overflow: auto;
 }
 
 .divItem {
