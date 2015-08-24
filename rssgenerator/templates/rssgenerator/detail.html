@@ -121,6 +121,8 @@ function contentRowsColumns() {
     var rows = Math.floor($('#content').height()/$('.divItem').height());
     if(rows == 0) {
         rows = 1;
+    }else {
+        rows++;
     }
     
     return [rows, columns];
