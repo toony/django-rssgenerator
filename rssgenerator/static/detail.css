@@ -54,6 +54,7 @@ body {
 }
 
 .divItem {
+    opacity: 0;
     margin: 2px;
     float:left;
     position: relative;
