@@ -11,6 +11,8 @@ cd django-rssgenerator
 ./buildDevEnv.sh
 ```
 
+Then, connect to: http://127.0.0.1:8000/
+
 ## Docker
 Build docker container using: 
 ```
