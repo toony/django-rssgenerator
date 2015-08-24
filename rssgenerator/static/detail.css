@@ -46,14 +46,14 @@ body {
     text-align : justify;
 }
 
-.divTable {
+.divContent {
     display: table;
     width: auto;
     border-collapse: separate;
     clear: both;
 }
 
-.divTableCels {
+.divItem {
     margin: 2px;
     float:left;
     position: relative;
@@ -63,7 +63,7 @@ body {
     width: 300px;
 }
 
-.divTableCelLeft {
+.divItemLeft {
     top: 4px;
     left: 9px;
     height: 90px;
@@ -72,7 +72,7 @@ body {
     border: .5px solid black;
 }
 
-.divTableCelRightParent {
+.divItemRightParent {
     top: 5px;
     left: 105px;
     right: 5px;
@@ -82,7 +82,7 @@ body {
     overflow: hidden;
 }
 
-.divTableCelRight {
+.divItemRight {
     height: 100%;
     width: 100%;
     overflow-y: auto;
