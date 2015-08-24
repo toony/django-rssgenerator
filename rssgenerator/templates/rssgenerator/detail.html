@@ -112,14 +112,33 @@
     <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
     
     <script type="text/javascript">
-window.onload = function loadItems() {
-    $('.divItem').each( function() {
-        $(this).css("display", "inline");
-        $(this).delay(500).show().animate({opacity:1},3000);
+function contentRowsColumns() {
+    var columns = Math.floor($('#content').width()/$('.divItem').width());
+    if(columns == 0) {
+        columns = 1;
+    }
+
+    var rows = Math.floor($('#content').height()/$('.divItem').height());
+    if(rows == 0) {
+        rows = 1;
+    }
+    
+    return [rows, columns];
+}
         
-        if ($('#content').prop('scrollHeight') > $('#content').height()+2) {
+window.onload = function loadItems() {
+    var [rows, columns] = contentRowsColumns();
+    var nbItemsToLoad = rows * columns;
+    console.log(nbItemsToLoad);
+    var count = 0;
+    $('.divItem').each( function() {
+        if(count >= nbItemsToLoad) {
             return false;
         }
+        count++;
+        
+        $(this).css("display", "inline");
+        $(this).delay(500).show().animate({opacity:1},3000);
     });
 }
         
@@ -137,6 +156,27 @@ function displayGallery(infoUrl, itemId) {
         var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
         gallery.init();
     });
+}
+
+var loading = false;
+$('#content').on('scroll', function() {
+    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        if(!loading){
+            loading = true;
+            loadNewContent();//call function to load content when scroll reachs DIV bottom                
+        }   
+    }
+});
+
+function loadNewContent() {
+    // LOAD columns more items
+    $('.divItem').each( function() {
+        $(this).css("display", "inline");
+        $(this).delay(500).show().animate({opacity:1},3000);
+    });
+    
+    console.log('opopop');
+    loading = false;
 }
     </script>
 </body>
