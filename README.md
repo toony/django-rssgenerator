@@ -13,6 +13,8 @@ cd django-rssgenerator
 
 Then, connect to: http://127.0.0.1:8000/
 
+Default admin account: admin/admin
+
 ## Docker
 Build docker container using: 
 ```
@@ -20,6 +22,6 @@ docker build -t toony/rssgenerator .
 docker run -d toony/rssgenerator
 ```
 
-Then connect to: `http://<container ip>/admin`
+Then, connect to: `http://<container ip>/admin`
 
 Default admin account: admin/admin
