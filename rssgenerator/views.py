@@ -41,3 +41,6 @@ def rssgallery(request, rss_id):
             rssGalleryIndex.append(linkInfos)
 
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
+
+def getItem(request, rss_id, itemPosition):
+    print rss.items_set.all()[5:6].get().pub_date
