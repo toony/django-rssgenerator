@@ -112,6 +112,8 @@
     <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
     
     <script type="text/javascript">
+const itemsTotal = {{ rss.items_set.all.count }};
+
 function contentRowsColumns() {
     var columns = Math.floor($('#content').width()/$('.divItem').width());
     if(columns == 0) {
