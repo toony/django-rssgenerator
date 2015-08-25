@@ -11,7 +11,7 @@ cd django-rssgenerator
 ./buildDevEnv.sh
 ```
 
-Then, connect to: http://127.0.0.1:8000/
+Then, connect to: http://127.0.0.1:8000/admin
 
 Default admin account: admin/admin
 
