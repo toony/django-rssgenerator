@@ -127,8 +127,8 @@ function contentRowsColumns() {
     
     return [rows, columns];
 }
-        
-window.onload = function loadItems() {
+
+function refreshDivContent() {
     var [rows, columns] = contentRowsColumns();
     var nbItemsToLoad = rows * columns;
     console.log(nbItemsToLoad);
@@ -143,6 +143,8 @@ window.onload = function loadItems() {
         $(this).delay(500).show().animate({opacity:1},3000);
     });
 }
+        
+window.onload = refreshDivContent();
         
 function displayGallery(infoUrl, itemId) {
     var pswpElement = document.querySelectorAll('.pswp')[0];
@@ -165,19 +167,18 @@ $('#content').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
         if(!loading){
             loading = true;
-            loadNewContent();//call function to load content when scroll reachs DIV bottom                
-        }   
+            addLineToDivContent();
+        }
     }
 });
 
-function loadNewContent() {
+function addLineToDivContent() {
     // LOAD columns more items
     $('.divItem').each( function() {
         $(this).css("display", "inline");
         $(this).delay(500).show().animate({opacity:1},3000);
     });
     
-    console.log('opopop');
     loading = false;
 }
     </script>
