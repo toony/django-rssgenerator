@@ -66,6 +66,6 @@ def itemnumber(request, rss_id, item_number):
         itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, rss.items_set.all()[0:1].get().id])
         itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
     else:
-        itemSummary['gallery'] = static('noLinks.png')
+        itemSummary['pic'] = static('noLinks.png')
     
     return HttpResponse(json.dumps(itemSummary), content_type="application/json")
