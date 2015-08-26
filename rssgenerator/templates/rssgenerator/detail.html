@@ -112,28 +112,31 @@
     <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
     
     <script type="text/javascript">
-const itemsTotal = {{ rss.items_set.all.count }};
+const totalItems = {{ rss.items_set.all.count }};
+const rssId = {{ rss.id }};
 
-function contentRowsColumns() {
-    var columns = Math.floor($('#content').width()/$('.divItem').width());
-    if(columns == 0) {
-        columns = 1;
-    }
+var contentProperties = {
+	columns: 1,
+	rows: 1,
+	
+	setContentRowsColumns : function() {
+		this.columns = Math.floor($('#content').width()/$('.divItem').width());
+		if(this.columns == 0) {
+			this.columns = 1;
+		}
 
-    var rows = Math.floor($('#content').height()/$('.divItem').height());
-    if(rows == 0) {
-        rows = 1;
-    }else {
-        rows++;
-    }
-    
-    return [rows, columns];
+		this.rows = Math.floor($('#content').height()/$('.divItem').height());
+		if(this.rows == 0) {
+			this.rows = 1;
+		}else {
+			this.rows++;
+		}
+	}
 }
 
 function refreshDivContent() {
-    var [rows, columns] = contentRowsColumns();
-    var nbItemsToLoad = rows * columns;
-    console.log(nbItemsToLoad);
+    contentProperties.setContentRowsColumns();
+    var nbItemsToLoad = contentProperties.rows * contentProperties.columns;
     var count = 0;
     $('.divItem').each( function() {
         if(count >= nbItemsToLoad) {
@@ -145,8 +148,8 @@ function refreshDivContent() {
         $(this).delay(500).show().animate({opacity:1},3000);
     });
 }
-        
-window.onload = refreshDivContent();
+
+window.addEventListener('load', refreshDivContent());
         
 function displayGallery(infoUrl, itemId) {
     var pswpElement = document.querySelectorAll('.pswp')[0];
