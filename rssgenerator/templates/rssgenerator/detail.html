@@ -219,7 +219,7 @@ var contentManager = {
     },
 
 	columns: function() {
-		var columns = Math.floor($('#content').width()/300);
+		var columns = Math.floor($('#content').get(0).scrollWidth/310);
 		if(columns == 0) {
 			columns = 1;
 		}
@@ -228,7 +228,7 @@ var contentManager = {
     },
 
     rows: function() {
-		var rows = Math.floor($('#content').height()/100);
+		var rows = Math.floor($('#content').height()/110);
 		if(rows == 0) {
 			rows = 1;
 		}else {
