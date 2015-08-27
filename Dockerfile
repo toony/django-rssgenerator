@@ -19,6 +19,7 @@ RUN mkdir -p /opt/rssgenerator-src
 COPY rssgenerator /opt/rssgenerator-src/rssgenerator
 COPY setup.py /opt/rssgenerator-src/setup.py
 COPY README.md /opt/rssgenerator-src/README.md
+COPY README.txt /opt/rssgenerator-src/README.txt
 COPY MANIFEST.in /opt/rssgenerator-src/MANIFEST.in
 COPY LICENSE /opt/rssgenerator-src/LICENSE
 
