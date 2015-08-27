@@ -17,31 +17,7 @@
         </div>
     </div>
     
-    <div id="content" class="divContent">
-        {% for item in rss.items_set.all %}
-            <div class="divItem" style="display:none">
-                {% if item.links_set.all.count > 0 %}
-                <div class="divItemLeft"
-                    onclick="displayGallery('{% url 'rss:itemgallery' rss.id item.id %}', {{ item.id }})">
-                    <img class="itemImage pointer" src="{% url 'rss:localstoreretrieve' rss.id item.id item.links_set.first.id %}"/>
-                    <div class="itemLinksBubble">
-                        <div class="itemLinksCount">{{item.links_set.all.count}}</div>
-                    </div>
-                {% else %}
-                <div class="divItemLeft">
-                    <img class="itemImage" src="/static/noLinks.png"/>
-                {% endif %}
-                </div>
-                <div class="divItemRightParent">
-                <div class="divItemRight">
-                    <p class="itemTitle">{{item.title}}</p>
-                    <p class="itemDate">{{ item.pub_date }}</p>
-                    <p class="itemSummary">{{ item.summary }}</p>
-                </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+    <div id="content" class="divContent" />
     
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -112,18 +88,173 @@
     <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
     
     <script type="text/javascript">
-window.onload = function loadItems() {
-    $('.divItem').each( function() {
-        $(this).css("display", "inline");
-        $(this).delay(500).show().animate({opacity:1},3000);
-        
-        if ($('#content').prop('scrollHeight') > $('#content').height()+2) {
-            return false;
+var itemManager = {
+    itemNumberRootUrl: '{% url 'rss:itemnumber' rss.id '' %}',
+    totalItems: {{ rss.items_set.all.count }},
+    itemsLoaded: {},
+    
+    loadItem: function(number) {
+        if(number == null) {
+            number = this.getNumberToLoad();
         }
-    });
-}
         
-function displayGallery(infoUrl, itemId) {
+        if(number < 0 || number >= this.totalItems) {
+            return;
+        }
+
+        if(number in this.itemsLoaded) {
+            return;
+        }
+        
+        this.itemsLoaded[number] = null;
+        $.getJSON(this.itemNumberRootUrl + number, function(itemSummary) {
+            itemManager.addItem(itemSummary);
+        });
+    },
+    
+    getNumberToLoad: function() {
+        return Object.keys(this.itemsLoaded).length;
+    },
+    
+    addItem: function(itemSummary) {
+        // <div class="divItem" style="display:none">...</div>
+        var itemElement = jQuery('<div/>')
+            .attr('id', 'item' + itemSummary['number'])
+            .addClass('divItem')
+            .css('display', 'none')
+            .append(this.leftPartElement(itemSummary))
+            .append(this.rightPartElement(itemSummary));
+            
+        $('#content').append(itemElement);
+        $(itemElement).css("display", "inline");
+        $(itemElement).delay(500).show().animate({opacity:1},3000);
+        
+        this.itemsLoaded[itemSummary['number']] = $(itemElement);
+    },
+    
+    leftPartElement: function(itemSummary) {
+        //<div class="divItemLeft">
+        //    <img class="itemImage pointer" src="${pic}"/>
+        //    <div class="itemLinksBubble">
+        //        <div class="itemLinksCount">${totalLinks}</div>
+        //    </div>
+        //</div>
+        var left = jQuery('<div/>')
+            .addClass('divItemLeft')
+            .append(this.picElement(itemSummary['pic']))
+            .append(this.bubbleElement(itemSummary['totalLinks']));
+            
+        if(typeof itemSummary['gallery'] != 'undefined') {
+            $(left).click(itemSummary['gallery'], displayGallery);
+        }
+        
+        return left;
+    },
+    
+    picElement: function(picPath) {
+        // <img class="itemImage pointer" src="${pic}"/>
+        return jQuery('<img/>')
+            .addClass('itemImage').addClass('pointer')
+            .attr('src', picPath);
+    },
+    
+    bubbleElement: function(totalLinks) {
+        // <div class="itemLinksBubble">
+        //    <div class="itemLinksCount">${totalLinks}</div>
+        // </div>
+        var number = jQuery('<div/>')
+            .addClass('itemLinksCount')
+            .text(totalLinks);
+            
+        return jQuery('<div/>')
+            .addClass('itemLinksBubble')
+            .append(number);
+    },
+    
+    rightPartElement: function(itemSummary) {
+        // <div class="divItemRightParent">
+        //     <div class="divItemRight">
+        //         <p class="itemTitle">${title}</p>
+        //         <p class="itemDate">${pub_date}</p>
+        //         <p class="itemSummary">${summary}</p>
+        //     </div>
+        // </div>
+        var divInfo = jQuery('<div/>')
+            .addClass('divItemRight')
+            .append(this.titleElement(itemSummary['title']))
+            .append(this.pubDateElement(itemSummary['pub_date']))
+            .append(this.summaryElement(itemSummary['summary']));
+            
+        return jQuery('<div/>')
+            .addClass('divItemRightParent')
+            .append(divInfo);
+    },
+    
+    titleElement: function(title) {
+        // <p class="itemTitle">${title}</p>
+        return jQuery('<p/>')
+            .addClass('itemTitle')
+            .text(title);
+    },
+    
+    pubDateElement: function(pubDate) {
+        // <p class="itemDate">${pub_date}</p>
+        return jQuery('<p/>')
+            .addClass('itemDate')
+            .text(pubDate);
+    },
+    
+    summaryElement: function(summary) {
+        // <p class="itemSummary">${summary}</p>
+        return jQuery('<p/>')
+            .addClass('itemSummary')
+            .text(summary);
+    },
+}
+const rssId = {{ rss.id }};
+
+var contentManager = {
+    totalItemsVisible: function() {
+        return this.rows() * this.columns();
+    },
+
+	columns: function() {
+		var columns = Math.floor($('#content').width()/300);
+		if(columns == 0) {
+			columns = 1;
+		}
+        
+        return columns;
+    },
+
+    rows: function() {
+		var rows = Math.floor($('#content').height()/100);
+		if(rows == 0) {
+			rows = 1;
+		}else {
+			rows++;
+		}
+        
+        return rows;
+	},
+    
+    init: function() {
+        for(var i=0; i<this.totalItemsVisible(); i++) {
+            itemManager.loadItem(i);
+        }
+    },
+    
+    addRow: function() {
+        for(var i=0; i<this.columns(); i++) {
+            itemManager.loadItem();
+        }
+    }
+}
+
+window.addEventListener('load', contentManager.init());
+        
+function displayGallery(event) {
+    console.log(event['data']);
     var pswpElement = document.querySelectorAll('.pswp')[0];
 
     // define options (if needed)
@@ -133,11 +264,17 @@ function displayGallery(infoUrl, itemId) {
         index: 0 // start at first slide
     };
     
-    $.getJSON(infoUrl, function(galleryInfos) {
+    $.getJSON(event['data'], function(galleryInfos) {
         var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
         gallery.init();
     });
 }
+
+$('#content').on('scroll', function() {
+    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        contentManager.addRow();
+    }
+});
     </script>
 </body>
 </html>
