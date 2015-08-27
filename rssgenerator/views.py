@@ -56,6 +56,7 @@ def itemnumber(request, rss_id, item_number):
 
     item = rss.items_set.all()[item_number:item_number+1].get()
     itemSummary = {
+        'number': item_number,
         'title': item.title,
         'pub_date': formats.date_format(item.pub_date, "DATETIME_FORMAT"),
         'summary': item.summary,
@@ -63,7 +64,7 @@ def itemnumber(request, rss_id, item_number):
     }
     
     if item.links_set.all().count() > 0:
-        itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, rss.items_set.all()[0:1].get().id])
+        itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[0:1].get().id])
         itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
     else:
         itemSummary['pic'] = static('noLinks.png')
