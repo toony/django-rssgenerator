@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="en_US">
 <head>
-    <link rel="stylesheet" href="/static/detail.css">
-    <link rel="stylesheet" href="/static/PhotoSwipe/photoswipe.css">
-    <link rel="stylesheet" href="/static/PhotoSwipe/default-skin/default-skin.css">
+    <link rel="stylesheet" href="{% static "detail.css" %}">
+    <link rel="stylesheet" href="{% static "PhotoSwipe/photoswipe.css" %}">
+    <link rel="stylesheet" href="{% static "PhotoSwipe/default-skin/default-skin.css" %}">
     <title>{{ rss.title }} - {{rss.items_set.all|length}} items</title>
 </head>
 
@@ -82,10 +82,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <!-- Core JS file -->
-    <script src="/static/PhotoSwipe/photoswipe.min.js"></script> 
+    <script src="{% static "PhotoSwipe/photoswipe.min.js" %}"></script>
 
     <!-- UI JS file -->
-    <script src="/static/PhotoSwipe/photoswipe-ui-default.min.js"></script>
+    <script src="{% static "PhotoSwipe/photoswipe-ui-default.min.js" %}"></script>
     
     <script type="text/javascript">
 var itemManager = {
