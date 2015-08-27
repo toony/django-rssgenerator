@@ -94,6 +94,10 @@ var itemManager = {
     itemsLoaded: {},
     
     loadItem: function(number) {
+        if(number == null) {
+            number = this.getNumberToLoad();
+        }
+        
         if(number < 0 || number >= this.totalItems) {
             return;
         }
@@ -102,9 +106,14 @@ var itemManager = {
             return;
         }
         
+        this.itemsLoaded[number] = null;
         $.getJSON(this.itemNumberRootUrl + number, function(itemSummary) {
             itemManager.addItem(itemSummary);
         });
+    },
+    
+    getNumberToLoad: function() {
+        return Object.keys(this.itemsLoaded).length;
     },
     
     addItem: function(itemSummary) {
@@ -234,6 +243,12 @@ var contentManager = {
             itemManager.loadItem(i);
         }
     },
+    
+    addRow: function() {
+        for(var i=0; i<this.columns(); i++) {
+            itemManager.loadItem();
+        }
+    }
 }
 
 window.addEventListener('load', contentManager.init());
@@ -255,25 +270,11 @@ function displayGallery(event) {
     });
 }
 
-var loading = false;
 $('#content').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-        if(!loading){
-            loading = true;
-            addLineToDivContent();
-        }
+        contentManager.addRow();
     }
 });
-
-function addLineToDivContent() {
-    // LOAD columns more items
-    $('.divItem').each( function() {
-        $(this).css("display", "inline");
-        $(this).delay(500).show().animate({opacity:1},3000);
-    });
-    
-    loading = false;
-}
     </script>
 </body>
 </html>
