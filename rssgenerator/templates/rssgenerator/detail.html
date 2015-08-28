@@ -113,6 +113,11 @@ var itemManager = {
     },
     
     getNumberToLoad: function() {
+        // Todo: search missing in keys
+        return Object.keys(this.itemsLoaded).length;
+    },
+    
+    getTotalLoaded: function() {
         return Object.keys(this.itemsLoaded).length;
     },
     
@@ -238,9 +243,25 @@ var contentManager = {
         return rows;
 	},
     
-    init: function() {
-        for(var i=0; i<this.totalItemsVisible(); i++) {
-            itemManager.loadItem(i);
+    fill: function(numberOfItems) {
+        if(numberOfItems === undefined) {
+            numberOfItems = this.totalItemsVisible();
+        }
+
+        for(var i=0; i < numberOfItems; i++) {
+            itemManager.loadItem();
+        }
+    },
+    
+    resized: function() {
+        if(itemManager.getTotalLoaded() < this.totalItemsVisible()) {
+            this.fill(this.totalItemsVisible() - itemManager.getTotalLoaded());
+            return
+        }
+        
+        var lastRowItemsCount = itemManager.getTotalLoaded() % this.columns();
+        if(lastRowItemsCount != 0) {
+            this.fill(this.columns() - lastRowItemsCount);
         }
     },
     
@@ -248,10 +269,10 @@ var contentManager = {
         for(var i=0; i<this.columns(); i++) {
             itemManager.loadItem();
         }
-    }
+    },
 }
 
-window.addEventListener('load', contentManager.init());
+window.addEventListener('load', contentManager.fill());
         
 function displayGallery(event) {
     console.log(event['data']);
@@ -274,6 +295,12 @@ $('#content').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
         contentManager.addRow();
     }
+});
+
+var resized;
+$(window).on('resize', function() {
+    clearTimeout(resized);
+    resized = setTimeout(function() { contentManager.resized(); }, 1000);
 });
     </script>
 </body>
