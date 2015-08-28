@@ -9,7 +9,7 @@
 
 <body>
     <div id="header">
-        <div onclick="displayGallery('{% url 'rss:rssgallery' rss.id %}')">
+        <div onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})">
             <p id="headerTitle">{{ rss.title }} - {{rss.items_set.all.count}} items</p>
         </div>
         <div id="headerSubscribe" onclick="location.href='{% url 'rss:rssstream' rss.id %}';">
