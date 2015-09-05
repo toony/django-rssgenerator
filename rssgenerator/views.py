@@ -1,6 +1,7 @@
 import json
 import RssToStream
 import LocalStore
+import random
 
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
@@ -64,7 +65,8 @@ def itemnumber(request, rss_id, item_number):
     }
     
     if item.links_set.all().count() > 0:
-        itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[0:1].get().id])
+        itemPicPosition = random.random() * item.links_set.all().count()
+        itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id])
         itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
     else:
         itemSummary['pic'] = static('noLinks.png')
