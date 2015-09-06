@@ -129,10 +129,16 @@ var itemManager = {
             .css('display', 'none')
             .append(this.leftPartElement(itemSummary))
             .append(this.rightPartElement(itemSummary));
-            
-        $('#content').append(itemElement);
-        $(itemElement).css("display", "inline");
-        $(itemElement).delay(500).show().animate({opacity:1},3000);
+        
+        var preLoadPic = new Image();
+        preLoadPic.onload = function() {
+            // Add src to picItem and display item
+            $('#content').append(itemElement);
+            $('#picItem' + itemSummary['number']).attr('src', this.src);
+            itemElement.css("display", "inline");
+            itemElement.delay(500).show().animate({opacity:1},3000);
+        };
+        preLoadPic.src = itemSummary['pic'];
         
         this.itemsLoaded[itemSummary['number']] = $(itemElement);
     },
@@ -146,7 +152,7 @@ var itemManager = {
         //</div>
         var left = jQuery('<div/>')
             .addClass('divItemLeft')
-            .append(this.picElement(itemSummary['pic']))
+            .append(this.picElement(itemSummary['number']))
             .append(this.bubbleElement(itemSummary['totalLinks']));
             
         if(typeof itemSummary['gallery'] != 'undefined') {
@@ -156,11 +162,11 @@ var itemManager = {
         return left;
     },
     
-    picElement: function(picPath) {
-        // <img class="itemImage pointer" src="${pic}"/>
+    picElement: function(itemNumber) {
+        // <img id=... class="itemImage pointer"/>
         return jQuery('<img/>')
-            .addClass('itemImage').addClass('pointer')
-            .attr('src', picPath);
+            .attr('id', 'picItem' + itemNumber)
+            .addClass('itemImage').addClass('pointer');
     },
     
     bubbleElement: function(totalLinks) {
