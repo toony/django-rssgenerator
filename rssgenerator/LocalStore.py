@@ -12,7 +12,7 @@ from django.conf import settings
 import os
 import struct
 import magic
-import urllib
+import urllib2
 
 class LocalStore:
     def __init__(self,
@@ -66,9 +66,15 @@ class LocalStore:
         itemPath = self.__getItemPath(itemId)
         if not os.path.exists(itemPath):
             os.makedirs(itemPath)
-            
-        linkDownloader = urllib.URLopener()
-        linkDownloader.retrieve(link.link, self.__getLinkFilePath(itemId, link))
+
+        response = urllib2.urlopen(urllib2.Request(link.link,
+            None,
+            {'User-agent':
+                'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'
+            })).read()
+        dstFile = open(self.__getLinkFilePath(itemId, link), 'w')
+        dstFile.write(response)
+        dstFile.close()
 
     def info(self, itemId, link):
         if not link.storeLocaly:
