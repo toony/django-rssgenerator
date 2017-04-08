@@ -36,6 +36,7 @@ ln -s ${GIT_CLONE}"/rssgenerator" .
 
 pushd project > /dev/null 2>&1
 sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',/" settings.py
+echo "RSSGENERATOR_LOCAL_DATA = '${WORKSPACE}/localData'" >> settings.py
 popd
 
 python manage.py migrate
