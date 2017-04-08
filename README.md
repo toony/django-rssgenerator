@@ -15,6 +15,12 @@ Then, connect to: http://127.0.0.1:8000/admin
 
 Default admin account: admin/admin
 
+If you stop development server, you may start it without rebuild all developer environment:
+```
+cd /path/to/django-rssgenerator/git/../rssgenerator-env/project
+python manage.py runserver
+```
+
 ## Docker
 Build docker container using: 
 ```
