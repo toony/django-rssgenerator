@@ -7,13 +7,16 @@ if [ $? -ne 0 ]; then
 fi
 
 WORKSPACE=`dirname $0`
-pushd ${WORKSPACE}
+pushd ${WORKSPACE} > /dev/null 2>&1
 WORKSPACE=`pwd`
 GIT_CLONE=`basename ${WORKSPACE}`
+pushd .. > /dev/null 2>&1
+WORKSPACE=`pwd`
+GIT_CLONE=${WORKSPACE}"/"${GIT_CLONE}
 
-PYENV="../rssgenerator-env"
+PYENV=${WORKSPACE}"/rssgenerator-env"
 mkdir -p ${PYENV}
-pushd ${PYENV}
+pushd ${PYENV} > /dev/null 2>&1
 
 # Create and activate virtualenv
 virtualenv rssgenerator-env
@@ -26,12 +29,12 @@ pip install Django==1.8 PyRSS2Gen python-magic
 django-admin startproject project
 
 popd
-cp "docker/djangoProjet-urls.py" ${PYENV}"/project/project/urls.py"
+cp ${GIT_CLONE}"/docker/djangoProjet-urls.py" ${PYENV}"/project/project/urls.py"
 
-pushd ${PYENV}"/project"
-ln -s "../../"${GIT_CLONE}"/rssgenerator" .
+pushd ${PYENV}"/project" > /dev/null 2>&1
+ln -s ${GIT_CLONE}"/rssgenerator" .
 
-pushd project
+pushd project > /dev/null 2>&1
 sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',/" settings.py
 popd
 
