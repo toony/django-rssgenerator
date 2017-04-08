@@ -32,7 +32,7 @@ def itemgallery(request, rss_id, item_id):
     
     return HttpResponse(json.dumps(itemGalleryIndex), content_type="application/json")
 
-def rssgallery(request, rss_id):
+def getRssgallery(rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
     localStore = LocalStore.LocalStore(rss_id)
 
@@ -42,7 +42,18 @@ def rssgallery(request, rss_id):
             linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rss.id, item.id, link.id]) }
             linkInfos.update(localStore.info(item.id, link))
             rssGalleryIndex.append(linkInfos)
+            
+    return rssGalleryIndex
 
+def rssgallery(request, rss_id):
+    rssGalleryIndex = getRssgallery(rss_id)
+
+    return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
+
+def rssgalleryrandom(request, rss_id):
+    rssGalleryIndex = getRssgallery(rss_id)
+    random.shuffle(rssGalleryIndex)
+    
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
 def itemnumber(request, rss_id, item_number):
