@@ -17,6 +17,7 @@
                 <nav>
                     <ul>
                         <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">Show all</a></li>
+                        <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgalleryrandom' rss.id %}'})" href="#">Random all</a></li>
                         <li><a href="{% url 'rss:rssstream' rss.id %}">Subscribe</a></li>
                     </ul>
                 </nav>
