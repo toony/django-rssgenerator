@@ -1,6 +1,7 @@
 {% load static %}<!DOCTYPE html>
 <html lang="en_US">
 <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static "detail.css" %}">
     <link rel="stylesheet" href="{% static "PhotoSwipe/photoswipe.css" %}">
     <link rel="stylesheet" href="{% static "PhotoSwipe/default-skin/default-skin.css" %}">
@@ -8,14 +9,21 @@
 </head>
 
 <body>
-    <div id="header">
-        <div onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})">
-            <p id="headerTitle">{{ rss.title }} - {{rss.items_set.all.count}} items</p>
+    <header>
+        <div class="header">
+            <input type="checkbox" id="tag-menu"/>
+            <label class="fa fa-bars menu-bar" for="tag-menu"></label>
+            <div class="drawer">
+                <nav>
+                    <ul>
+                        <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">Show all</a></li>
+                        <li><a href="{% url 'rss:rssstream' rss.id %}">Subscribe</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <span class="title">{{ rss.title }} - {{rss.items_set.all.count}} items</span>
         </div>
-        <div id="headerSubscribe" onclick="location.href='{% url 'rss:rssstream' rss.id %}';">
-            <p>subscribe</p>
-        </div>
-    </div>
+    </header>
     
     <div id="content" class="divContent" />
     
