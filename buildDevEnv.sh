@@ -20,7 +20,7 @@ virtualenv rssgenerator-env
 . ./rssgenerator-env/bin/activate
 
 # Install dependencies
-pip install Django PyRSS2Gen python-magic
+pip install Django==1.8 PyRSS2Gen python-magic
 
 # Initialize Django project
 django-admin startproject project
