@@ -279,8 +279,14 @@ var contentManager = {
         }
     },
     
-    addRow: function() {
-        for(var i=0; i<this.columns(); i++) {
+    addRow: function(numberOfRow) {
+        numberOfItems = this.columns();
+        
+        if(numberOfRow !== undefined) {
+            numberOfItems = numberOfRow * numberOfItems;
+        }
+        
+        for(var i=0; i<numberOfItems; i++) {
             itemManager.loadItem();
         }
     },
@@ -306,7 +312,7 @@ function displayGallery(event) {
 
 $('#content').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
-        contentManager.addRow();
+        contentManager.addRow(2);
     }
 });
 
