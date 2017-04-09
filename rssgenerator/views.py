@@ -56,19 +56,21 @@ def rssgalleryrandom(request, rss_id):
     
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
-def itemnumber(request, rss_id, item_number):
-    if item_number == "":
-        raise Http404("Undefined item position")
-    
+def allitemsid(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    item_number = int(item_number)
+    
+    ids = []
+    for itemId in rss.items_set.values("id").order_by("id"):
+        ids.append(itemId["id"])
+        
+    return HttpResponse(json.dumps(ids), content_type="application/json")
 
-    if item_number < 0 or item_number > rss.items_set.all().count():
-        raise Http404("Invalid item position: " + item_number)
+def itemsummary(request, rss_id, item_id):        
+    rss = get_object_or_404(Rss, id=rss_id)
+    item = get_object_or_404(Items, id=item_id)
 
-    item = rss.items_set.all()[item_number:item_number+1].get()
     itemSummary = {
-        'number': item_number,
+        'id': item.id,
         'title': item.title,
         'pub_date': formats.date_format(item.pub_date, "DATETIME_FORMAT"),
         'summary': item.summary,
