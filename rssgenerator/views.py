@@ -60,7 +60,7 @@ def allitemsid(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
     
     ids = []
-    for itemId in rss.items_set.values("id").order_by("-id"):
+    for itemId in rss.items_set.values("id").order_by("-pub_date"):
         ids.append(itemId["id"])
         
     return HttpResponse(json.dumps(ids), content_type="application/json")
