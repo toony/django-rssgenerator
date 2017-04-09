@@ -99,7 +99,7 @@
     <!-- RSS Content -->
     <script type="text/javascript">
 var itemNumberRootUrl = "{% url 'rss:itemnumber' rss.id '' %}";
-var totalItems ={{ rss.items_set.all.count }};
+var totalItems = {{ rss.items_set.all.count }};
     </script>
 
     <script src="{% static "itemmanager.js" %}"></script>
