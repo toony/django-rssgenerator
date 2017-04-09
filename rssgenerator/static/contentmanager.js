@@ -5,25 +5,25 @@ function ContentManager() {
         return this.rows() * this.columns();
     };
 
-	this.columns = function() {
-		var columns = Math.floor($('#content').get(0).scrollWidth/310);
-		if(columns == 0) {
-			columns = 1;
-		}
+    this.columns = function() {
+	var columns = Math.floor($('#content').get(0).scrollWidth/310);
+	if(columns == 0) {
+		columns = 1;
+	}
         
         return columns;
     };
 
     this.rows = function() {
-		var rows = Math.floor($('#content').height()/110);
-		if(rows == 0) {
-			rows = 1;
-		}else {
-			rows++;
-		}
+	var rows = Math.floor($('#content').height()/110);
+	if(rows == 0) {
+		rows = 1;
+	}else {
+		rows++;
+	}
         
         return rows;
-	};
+    };
     
     this.fill = function(numberOfItems) {
         if(numberOfItems === undefined) {
