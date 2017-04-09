@@ -4,7 +4,7 @@ function Item(itemSummary) {
     this.display = function() {
         // <div class="divItem" style="display:none">...</div>
         this.itemElement = jQuery('<div/>')
-            .attr('id', 'item' + this.itemSummary['number'])
+            .attr('id', 'item' + this.itemSummary['id'])
             .addClass('divItem')
             .css('display', 'none')
             .append(this.leftPartElement())
@@ -15,7 +15,7 @@ function Item(itemSummary) {
         preLoadPic.onload = function() {
             // Add src to picItem and display item
             $('#content').append(itemElement);
-            $('#picItem' + itemSummary['number']).attr('src', this.src);
+            $('#picItem' + itemSummary['id']).attr('src', this.src);
             itemElement.css("display", "inline");
             itemElement.delay(500).show().animate({opacity:1},3000);
         };
@@ -31,7 +31,7 @@ function Item(itemSummary) {
         //</div>
         var left = jQuery('<div/>')
             .addClass('divItemLeft')
-            .append(this.picElement(this.itemSummary['number']))
+            .append(this.picElement(this.itemSummary['id']))
             .append(this.bubbleElement(this.itemSummary['totalLinks']));
             
         if(typeof this.itemSummary['gallery'] != 'undefined') {
@@ -41,10 +41,10 @@ function Item(itemSummary) {
         return left;
     };
     
-    this.picElement = function(itemNumber) {
+    this.picElement = function(itemId) {
         // <img id=... class="itemImage pointer"/>
         return jQuery('<img/>')
-            .attr('id', 'picItem' + itemNumber)
+            .attr('id', 'picItem' + itemId)
             .addClass('itemImage').addClass('pointer');
     };
     
@@ -102,41 +102,47 @@ function Item(itemSummary) {
     };
 };
 
-function ItemManager() {
-    this.itemNumberRootUrl = itemNumberRootUrl;
-    this.totalItems = totalItems;
+function ItemManager(itemsIdList) {
+    this.itemsIdList = itemsIdList;
+    this.rssRootUrl = rssRootUrl;
+    
     this.itemsLoaded = {};
     
-    this.loadItem = function(number) {
-        if(number == null) {
-            number = this.getNumberToLoad();
-        }
+    this.loadItem = function() {
+        itemId = this.getIdToLoad();
         
-        if(number < 0 || number >= this.totalItems) {
+        if( itemId == null ) {
             return;
         }
 
-        if(number in this.itemsLoaded) {
-            return;
-        }
-        
-        this.itemsLoaded[number] = null;
-        $.getJSON(this.itemNumberRootUrl + number, function(itemSummary) {
+        $.getJSON(this.getItemSummaryUrl(itemId), function(itemSummary) {
             contentManager.addItem(new Item(itemSummary));
         });
     };
     
-    this.getNumberToLoad = function() {
-        // Todo: search missing in keys
-        return Object.keys(this.itemsLoaded).length;
+    this.getIdToLoad = function() {
+        for( i in this.itemsIdList ) {
+            itemId = this.itemsIdList[i];
+            
+            if( !(itemId in this.itemsLoaded) ) {
+                this.itemsLoaded[itemId] = null;
+                return itemId;
+            }
+        }
+        
+        return null;
     };
+    
+    this.getItemSummaryUrl = function(itemId) {
+        return this.rssRootUrl + itemId + "/summary";
+    }
     
     this.getTotalLoaded = function() {
         return Object.keys(this.itemsLoaded).length;
     }
     
     this.addItem = function(item) {
+        this.itemsLoaded[item.itemSummary['id']] = item;
         item.display();
-        this.itemsLoaded[item.itemSummary['number']] = $(item.itemElement);
     };
 };

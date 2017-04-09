@@ -1,5 +1,5 @@
 function ContentManager() {
-    this.itemManager = new ItemManager();
+    this.itemManager = null;
     
     this.totalItemsVisible = function() {
         return this.rows() * this.columns();
@@ -61,6 +61,10 @@ function ContentManager() {
     
     this.addItem = function(item) {
 	this.itemManager.addItem(item);
+    };
+    
+    this.initItemManager = function(itemsIdList) {
+	this.itemManager = new ItemManager(itemsIdList);
     };
 };
 
