@@ -98,8 +98,8 @@
     
     <!-- RSS Content -->
     <script type="text/javascript">
-var itemNumberRootUrl = "{% url 'rss:itemnumber' rss.id '' %}";
-var totalItems = {{ rss.items_set.all.count }};
+var getAllItemsIdUrl = "{% url 'rss:allitemsid' rss.id %}";
+var rssRootUrl = "{% url 'rss:detail' rss.id %}";
     </script>
 
     <script src="{% static "itemmanager.js" %}"></script>
@@ -107,7 +107,14 @@ var totalItems = {{ rss.items_set.all.count }};
     <script src="{% static "common.js" %}"></script>
     
     <script type="text/javascript">
-window.addEventListener('load', contentManager.fill());
+window.addEventListener('load', onLoad());
+
+function onLoad() {
+    $.getJSON(getAllItemsIdUrl, function(itemsIdList) {
+            contentManager.initItemManager(itemsIdList);
+            contentManager.fill()
+        });
+}
 
 $('#content').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
