@@ -58,6 +58,10 @@ function ContentManager() {
             this.itemManager.loadItem();
         }
     };
+    
+    this.addItem = function(item) {
+	this.itemManager.addItem(item);
+    };
 };
 
 var contentManager = new ContentManager();

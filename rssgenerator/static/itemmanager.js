@@ -1,45 +1,16 @@
-function ItemManager() {
-    this.itemNumberRootUrl = itemNumberRootUrl;
-    this.totalItems = totalItems;
-    this.itemsLoaded = {};
+function Item(itemSummary) {
+    this.itemSummary = itemSummary;
     
-    this.loadItem = function(number) {
-        if(number == null) {
-            number = this.getNumberToLoad();
-        }
-        
-        if(number < 0 || number >= this.totalItems) {
-            return;
-        }
-
-        if(number in this.itemsLoaded) {
-            return;
-        }
-        
-        this.itemsLoaded[number] = null;
-        $.getJSON(this.itemNumberRootUrl + number, function(itemSummary) {
-            contentManager.itemManager.addItem(itemSummary);
-        });
-    };
-    
-    this.getNumberToLoad = function() {
-        // Todo: search missing in keys
-        return Object.keys(this.itemsLoaded).length;
-    };
-    
-    this.getTotalLoaded = function() {
-        return Object.keys(this.itemsLoaded).length;
-    }
-    
-    this.addItem = function(itemSummary) {
+    this.display = function() {
         // <div class="divItem" style="display:none">...</div>
-        var itemElement = jQuery('<div/>')
+        this.itemElement = jQuery('<div/>')
             .attr('id', 'item' + itemSummary['number'])
             .addClass('divItem')
             .css('display', 'none')
-            .append(this.leftPartElement(itemSummary))
-            .append(this.rightPartElement(itemSummary));
-        
+            .append(this.leftPartElement())
+            .append(this.rightPartElement());
+
+        var itemElement = this.itemElement;
         var preLoadPic = new Image();
         preLoadPic.onload = function() {
             // Add src to picItem and display item
@@ -49,11 +20,9 @@ function ItemManager() {
             itemElement.delay(500).show().animate({opacity:1},3000);
         };
         preLoadPic.src = itemSummary['pic'];
-        
-        this.itemsLoaded[itemSummary['number']] = $(itemElement);
     };
     
-    this.leftPartElement = function(itemSummary) {
+    this.leftPartElement = function() {
         //<div class="divItemLeft">
         //    <img class="itemImage pointer" src="${pic}"/>
         //    <div class="itemLinksBubble">
@@ -62,10 +31,10 @@ function ItemManager() {
         //</div>
         var left = jQuery('<div/>')
             .addClass('divItemLeft')
-            .append(this.picElement(itemSummary['number']))
-            .append(this.bubbleElement(itemSummary['totalLinks']));
+            .append(this.picElement(this.itemSummary['number']))
+            .append(this.bubbleElement(this.itemSummary['totalLinks']));
             
-        if(typeof itemSummary['gallery'] != 'undefined') {
+        if(typeof this.itemSummary['gallery'] != 'undefined') {
             $(left).click(itemSummary['gallery'], displayGallery);
         }
         
@@ -92,7 +61,7 @@ function ItemManager() {
             .append(number);
     };
     
-    this.rightPartElement = function(itemSummary) {
+    this.rightPartElement = function() {
         // <div class="divItemRightParent">
         //     <div class="divItemRight">
         //         <p class="itemTitle">${title}</p>
@@ -102,9 +71,9 @@ function ItemManager() {
         // </div>
         var divInfo = jQuery('<div/>')
             .addClass('divItemRight')
-            .append(this.titleElement(itemSummary['title']))
-            .append(this.pubDateElement(itemSummary['pub_date']))
-            .append(this.summaryElement(itemSummary['summary']));
+            .append(this.titleElement(this.itemSummary['title']))
+            .append(this.pubDateElement(this.itemSummary['pub_date']))
+            .append(this.summaryElement(this.itemSummary['summary']));
             
         return jQuery('<div/>')
             .addClass('divItemRightParent')
@@ -130,5 +99,44 @@ function ItemManager() {
         return jQuery('<p/>')
             .addClass('itemSummary')
             .text(summary);
+    };
+};
+
+function ItemManager() {
+    this.itemNumberRootUrl = itemNumberRootUrl;
+    this.totalItems = totalItems;
+    this.itemsLoaded = {};
+    
+    this.loadItem = function(number) {
+        if(number == null) {
+            number = this.getNumberToLoad();
+        }
+        
+        if(number < 0 || number >= this.totalItems) {
+            return;
+        }
+
+        if(number in this.itemsLoaded) {
+            return;
+        }
+        
+        this.itemsLoaded[number] = null;
+        $.getJSON(this.itemNumberRootUrl + number, function(itemSummary) {
+            contentManager.addItem(new Item(itemSummary));
+        });
+    };
+    
+    this.getNumberToLoad = function() {
+        // Todo: search missing in keys
+        return Object.keys(this.itemsLoaded).length;
+    };
+    
+    this.getTotalLoaded = function() {
+        return Object.keys(this.itemsLoaded).length;
+    }
+    
+    this.addItem = function(item) {
+        item.display();
+        this.itemsLoaded[item.itemSummary['number']] = $(item.itemElement);
     };
 };
