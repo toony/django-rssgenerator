@@ -4,7 +4,7 @@ function Item(itemSummary) {
     this.display = function() {
         // <div class="divItem" style="display:none">...</div>
         this.itemElement = jQuery('<div/>')
-            .attr('id', 'item' + itemSummary['number'])
+            .attr('id', 'item' + this.itemSummary['number'])
             .addClass('divItem')
             .css('display', 'none')
             .append(this.leftPartElement())
