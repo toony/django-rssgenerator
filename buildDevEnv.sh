@@ -2,8 +2,8 @@
 
 which virtualenv > /dev/null 2>&1
 if [ $? -ne 0 ]; then
-	echo "virtualenv must be installed and accessible from PATH"
-	exit 1
+    echo "virtualenv must be installed and accessible from PATH"
+    exit 1
 fi
 
 WORKSPACE=`dirname $0`

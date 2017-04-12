@@ -35,7 +35,7 @@ class RssToStream:
         for item in items:
             template = loader.get_template('rssgenerator/rssItemBody.html')
             context = Context({
-				'rootUri' : self.rootUri,
+                'rootUri' : self.rootUri,
                 'description': item.summary,
                 'links': item.links_set.all()
             })

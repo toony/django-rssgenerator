@@ -1,20 +1,20 @@
 .menu-bar {
-	color:#FFF;
-	font-size:26px;
-	cursor:pointer;
-	padding:10px 12px;
-	margin-left:10px;
-	margin-top:5px;
-	margin-bottom:5px;
+    color:#FFF;
+    font-size:26px;
+    cursor:pointer;
+    padding:10px 12px;
+    margin-left:10px;
+    margin-top:5px;
+    margin-bottom:5px;
 }
 
 .menu-bar:hover {
-	background-color:rgba(0, 0, 0, 0.1);
-	border-radius:50px;
+    background-color:rgba(0, 0, 0, 0.1);
+    border-radius:50px;
 }
 
 #tag-menu {
-	display:none;
+    display:none;
 }
 
 #tag-menu:checked ~ div.drawer {
@@ -24,14 +24,14 @@
 
 .drawer {
     top: 60px;
-	position:fixed;
-	left:-200px;
-	background-color:#06C;
-	height:100%;
-	z-index:100;
-	width:200px;
-	animation: slide-out 0.5s ease;
-	animation-fill-mode: forwards;
+    position:fixed;
+    left:-200px;
+    background-color:#06C;
+    height:100%;
+    z-index:100;
+    width:200px;
+    animation: slide-out 0.5s ease;
+    animation-fill-mode: forwards;
 }
 
 .drawer ul {
@@ -39,26 +39,26 @@
 }
 
 .drawer ul li {
-	list-style:none;
+    list-style:none;
 }
 
 .drawer ul li a {
-	padding:10px 30px;
-	text-decoration:none;
-	display:block;
-	color:#FFF;
-	border-top:1px solid #039;
+    padding:10px 30px;
+    text-decoration:none;
+    display:block;
+    color:#FFF;
+    border-top:1px solid #039;
 }
 
 .drawer ul li a:hover{
-	background-color:rgba(0, 0, 0, 0.1);
+    background-color:rgba(0, 0, 0, 0.1);
 }
 
 .drawer ul li a i {
-	width:50px;
-	height:35px;
-	text-align:center;
-	padding-top:15px;
+    width:50px;
+    height:35px;
+    text-align:center;
+    padding-top:15px;
 }
 
 @keyframes slide-in {

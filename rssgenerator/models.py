@@ -34,8 +34,8 @@ def __storeLink(sender, instance, **kwargs):
     link = instance
     item = link.item
     if not link.storeLocaly:
-		LocalStore.LocalStore(item.rss.id).delete(item.id, link)
-		return
+        LocalStore.LocalStore(item.rss.id).delete(item.id, link)
+        return
         
     LocalStore.LocalStore(item.rss.id).store(item.id, link)
     
