@@ -31,7 +31,9 @@
         </div>
     </header>
     
-    <div id="content" class="divContent" />
+    <div id="gallery">
+    <div id="content" class="divContent"></div>
+    </div>
     
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -120,22 +122,6 @@ function onLoad() {
             contentManager.fill()
         });
 }
-
-$('#content').on('wheel', function(e) {
-    var oEvent = e.originalEvent;
-    console.log(oEvent.deltaY);
-    if(oEvent.deltaY > 0) {
-        contentManager.addRow(2);
-    }
-});
-
-$(document).ready(function(){
-    $(document).keypress(function(e){
-        if(e.keyCode === 34){
-            contentManager.addRow(2);
-        }
-    });
-});
     </script>
 </body>
 </html>

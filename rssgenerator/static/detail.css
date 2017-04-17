@@ -42,7 +42,7 @@ header {
     overflow: auto;
 }
 
-.divContent {
+#gallery {
     margin: 0 auto;
     padding: 0;
     position: absolute;
@@ -53,7 +53,9 @@ header {
     border-collapse: separate;
     clear: both;
     overflow: auto;
+}
 
+.divContent {
     text-align: center;
     display: flex;
     flex-flow: wrap;
