@@ -83,7 +83,7 @@ header {
 .thumb img {
     border-radius: 10px;
     max-width: 100%;
-    max-height: 150px;
+    max-height: 250px;
     vertical-align: bottom;
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.4);
 }
