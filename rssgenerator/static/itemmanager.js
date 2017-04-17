@@ -3,12 +3,11 @@ function Item(itemSummary) {
     
     this.display = function() {
         // <div class="divItem" style="display:none">...</div>
-        this.itemElement = jQuery('<div/>')
+        this.itemElement = jQuery('<figure/>')
             .attr('id', 'item' + this.itemSummary['id'])
-            .addClass('divItem')
-            .css('display', 'none')
-            .append(this.leftPartElement())
-            .append(this.rightPartElement());
+            .addClass('thumb')
+            .css('opacity', '0')
+            .append(this.thumb());
 
         var itemElement = this.itemElement;
         var preLoadPic = new Image();
@@ -16,11 +15,20 @@ function Item(itemSummary) {
             // Add src to picItem and display item
             $('#content').append(itemElement);
             $('#picItem' + itemSummary['id']).attr('src', this.src);
-            itemElement.css("display", "inline");
+            //itemElement.css("display", "inline");
             itemElement.delay(500).show().animate({opacity:1},3000);
         };
         preLoadPic.src = itemSummary['pic'];
     };
+    
+    this.thumb = function() {
+        var img = jQuery('<img/>')
+            .attr('id', 'picItem' + this.itemSummary['id']);
+        
+        return jQuery('<a/>')
+            .attr('href', '#')
+            .append(img);
+    }
     
     this.leftPartElement = function() {
         //<div class="divItemLeft">

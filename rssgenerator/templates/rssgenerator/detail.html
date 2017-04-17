@@ -1,6 +1,10 @@
 {% load static %}<!DOCTYPE html>
 <html lang="en_US">
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static "detail.css" %}">
     <link rel="stylesheet" href="{% static "menu.css" %}">
@@ -117,16 +121,20 @@ function onLoad() {
         });
 }
 
-$('#content').on('scroll', function() {
-    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+$('#content').on('wheel', function(e) {
+    var oEvent = e.originalEvent;
+    console.log(oEvent.deltaY);
+    if(oEvent.deltaY > 0) {
         contentManager.addRow(2);
     }
 });
 
-var resized;
-$(window).on('resize', function() {
-    clearTimeout(resized);
-    resized = setTimeout(function() { contentManager.resized(); }, 1000);
+$(document).ready(function(){
+    $(document).keypress(function(e){
+        if(e.keyCode === 34){
+            contentManager.addRow(2);
+        }
+    });
 });
     </script>
 </body>
