@@ -94,7 +94,8 @@ function Item(itemSummary) {
         .attr('id', 'item' + this.itemSummary['id'])
         .addClass('thumb')
         .css('opacity', '0')
-        .append(this.thumb());
+        .append(this.thumb())
+        .click(itemSummary['gallery'], displayGallery);
 
     var preLoadPic = new Image();
     preLoadPic.onload = function() {
