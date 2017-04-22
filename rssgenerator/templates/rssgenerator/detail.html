@@ -106,7 +106,6 @@
     <!-- RSS Content -->
     <script type="text/javascript">
 var getAllItemsIdUrl = "{% url 'rss:allitemsid' rss.id %}";
-var rssRootUrl = "{% url 'rss:detail' rss.id %}";
     </script>
 
     <script src="{% static "itemmanager.js" %}"></script>
@@ -118,7 +117,7 @@ window.addEventListener('load', onLoad());
 
 function onLoad() {
     $.getJSON(getAllItemsIdUrl, function(itemsIdList) {
-            contentManager.initItemManager(itemsIdList);
+            contentManager = new ContentManager("{% url 'rss:detail' rss.id %}", itemsIdList);
             contentManager.fill()
         });
 }

@@ -1,26 +1,6 @@
 function Item(itemSummary) {
     this.itemSummary = itemSummary;
     
-    this.display = function() {
-        // <div class="divItem" style="display:none">...</div>
-        this.itemElement = jQuery('<figure/>')
-            .attr('id', 'item' + this.itemSummary['id'])
-            .addClass('thumb')
-            .css('opacity', '0')
-            .append(this.thumb());
-
-        var itemElement = this.itemElement;
-        var preLoadPic = new Image();
-        preLoadPic.onload = function() {
-            // Add src to picItem and display item
-            $('#content').append(itemElement);
-            $('#picItem' + itemSummary['id']).attr('src', this.src);
-            //itemElement.css("display", "inline");
-            itemElement.delay(500).show().animate({opacity:1},3000);
-        };
-        preLoadPic.src = itemSummary['pic'];
-    };
-    
     this.thumb = function() {
         var img = jQuery('<img/>')
             .attr('id', 'picItem' + this.itemSummary['id']);
@@ -108,49 +88,20 @@ function Item(itemSummary) {
             .addClass('itemSummary')
             .text(summary);
     };
-};
+    
+    // <div class="divItem" style="display:none">...</div>
+    this.itemElement = jQuery('<figure/>')
+        .attr('id', 'item' + this.itemSummary['id'])
+        .addClass('thumb')
+        .css('opacity', '0')
+        .append(this.thumb());
 
-function ItemManager(itemsIdList) {
-    this.itemsIdList = itemsIdList;
-    this.rssRootUrl = rssRootUrl;
-    
-    this.itemsLoaded = {};
-    
-    this.loadItem = function() {
-        itemId = this.getIdToLoad();
-        
-        if( itemId == null ) {
-            return;
-        }
-
-        $.getJSON(this.getItemSummaryUrl(itemId), function(itemSummary) {
-            contentManager.addItem(new Item(itemSummary));
-        });
+    var preLoadPic = new Image();
+    preLoadPic.onload = function() {
+        // Add src to picItem and display item
+        $('#picItem' + itemSummary['id']).attr('src', this.src);
+        //itemElement.css("display", "inline");
+        $('#item' + itemSummary['id']).delay(500).show().animate({opacity:1},3000);
     };
-    
-    this.getIdToLoad = function() {
-        for( i in this.itemsIdList ) {
-            itemId = this.itemsIdList[i];
-            
-            if( !(itemId in this.itemsLoaded) ) {
-                this.itemsLoaded[itemId] = null;
-                return itemId;
-            }
-        }
-        
-        return null;
-    };
-    
-    this.getItemSummaryUrl = function(itemId) {
-        return this.rssRootUrl + itemId + "/summary";
-    }
-    
-    this.getTotalLoaded = function() {
-        return Object.keys(this.itemsLoaded).length;
-    }
-    
-    this.addItem = function(item) {
-        this.itemsLoaded[item.itemSummary['id']] = item;
-        item.display();
-    };
+    preLoadPic.src = itemSummary['pic'];
 };
