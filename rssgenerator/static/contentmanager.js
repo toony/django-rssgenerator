@@ -13,7 +13,6 @@ function ContentManager(rssRootUrl, itemsIdList) {
         }
 
         $.getJSON(this.getItemSummaryUrl(itemId), function(itemSummary) {
-            console.log(itemSummary);
             contentManager.addItem(new Item(itemSummary));
         });
     };
