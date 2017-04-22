@@ -117,6 +117,18 @@ function onLoad() {
             contentManager.fill()
         });
 }
+
+$('#gallery').on('scroll', function() {
+    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+        contentManager.fill();
+    }
+});
+
+var resized;
+$(window).on('resize', function() {
+    clearTimeout(resized);
+    resized = setTimeout(function() { contentManager.fill(); }, 1000);
+});
     </script>
 </body>
 </html>

@@ -2,6 +2,9 @@ function ContentManager(rssRootUrl, itemsIdList) {
     this.rssRootUrl = rssRootUrl;
     this.itemsIdList = itemsIdList;
     this.loadOffset = 20;
+    this.loadingItemscount = 0;
+    
+    this.curentContentHeight = 0;
     
     this.itemsLoaded = {};
     
@@ -36,13 +39,30 @@ function ContentManager(rssRootUrl, itemsIdList) {
     }
     
     this.fill = function() {
+        this.curentContentHeight = $('#content')[0].offsetHeight;
+        
         for(var i=0; i < this.loadOffset; i++) {
             itemId = this.loadItem();
             if(itemId === null) {
                 break;
             }
             
+            this.loadingItemscount++;
             this.itemsLoaded[itemId] = null;
+        }
+    };
+    
+    this.itemVisible = function(item) {
+        this.loadingItemscount--;
+        
+        if(this.loadingItemscount == 0) {
+            var galleryHeight = $('#gallery')[0].offsetHeight;
+            var contentHeight = $('#content')[0].offsetHeight;
+            
+            if(contentHeight == this.curentContentHeight
+             || (contentHeight - galleryHeight) < 250) {
+                this.fill();
+            }
         }
     };
     
@@ -56,7 +76,7 @@ function ContentManager(rssRootUrl, itemsIdList) {
             $('#picItem' + item.itemSummary['id']).attr('src', this.src);
             //itemElement.css("display", "inline");
             $('#item' + item.itemSummary['id']).delay(500).show().animate({opacity:1},3000);
-            console.log($('#content')[0].offsetHeight);
+            contentManager.itemVisible(item);
         };
         preLoadPic.src = item.itemSummary['pic'];
     };
