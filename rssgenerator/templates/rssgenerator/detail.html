@@ -119,7 +119,7 @@ function onLoad() {
 }
 
 $('#gallery').on('scroll', function() {
-    if($(this).scrollTop() + $(this).innerHeight() >= $(this)[0].scrollHeight) {
+    if($(this).scrollTop() + $(this).innerHeight() + 300 >= $(this)[0].scrollHeight) {
         contentManager.fill();
     }
 });

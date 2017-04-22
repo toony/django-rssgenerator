@@ -2,7 +2,7 @@ function ContentManager(rssRootUrl, itemsIdList) {
     this.rssRootUrl = rssRootUrl;
     this.itemsIdList = itemsIdList;
     this.loadOffset = 20;
-    this.loadingItemscount = 0;
+    this.loadingItemsCount = 0;
     
     this.curentContentHeight = 0;
     
@@ -39,6 +39,11 @@ function ContentManager(rssRootUrl, itemsIdList) {
     }
     
     this.fill = function() {
+        if(this.loadingItemsCount != 0) {
+            // Currently loading, do nothing
+            return;
+        }
+        
         this.curentContentHeight = $('#content')[0].offsetHeight;
         
         for(var i=0; i < this.loadOffset; i++) {
@@ -47,15 +52,15 @@ function ContentManager(rssRootUrl, itemsIdList) {
                 break;
             }
             
-            this.loadingItemscount++;
+            this.loadingItemsCount++;
             this.itemsLoaded[itemId] = null;
         }
     };
     
     this.itemVisible = function(item) {
-        this.loadingItemscount--;
+        this.loadingItemsCount--;
         
-        if(this.loadingItemscount == 0) {
+        if(this.loadingItemsCount == 0) {
             var galleryHeight = $('#gallery')[0].offsetHeight;
             var contentHeight = $('#content')[0].offsetHeight;
             
