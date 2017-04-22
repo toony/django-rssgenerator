@@ -104,10 +104,6 @@
     <script src="{% static "PhotoSwipe/photoswipe-ui-default.min.js" %}"></script>
     
     <!-- RSS Content -->
-    <script type="text/javascript">
-var getAllItemsIdUrl = "{% url 'rss:allitemsid' rss.id %}";
-    </script>
-
     <script src="{% static "itemmanager.js" %}"></script>
     <script src="{% static "contentmanager.js" %}"></script>
     <script src="{% static "common.js" %}"></script>
@@ -116,7 +112,7 @@ var getAllItemsIdUrl = "{% url 'rss:allitemsid' rss.id %}";
 window.addEventListener('load', onLoad());
 
 function onLoad() {
-    $.getJSON(getAllItemsIdUrl, function(itemsIdList) {
+    $.getJSON("{% url 'rss:allitemsid' rss.id %}", function(itemsIdList) {
             contentManager = new ContentManager("{% url 'rss:detail' rss.id %}", itemsIdList);
             contentManager.fill()
         });

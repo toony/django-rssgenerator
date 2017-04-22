@@ -96,13 +96,4 @@ function Item(itemSummary) {
         .css('opacity', '0')
         .append(this.thumb())
         .click(itemSummary['gallery'], displayGallery);
-
-    var preLoadPic = new Image();
-    preLoadPic.onload = function() {
-        // Add src to picItem and display item
-        $('#picItem' + itemSummary['id']).attr('src', this.src);
-        //itemElement.css("display", "inline");
-        $('#item' + itemSummary['id']).delay(500).show().animate({opacity:1},3000);
-    };
-    preLoadPic.src = itemSummary['pic'];
 };
