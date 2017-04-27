@@ -113,9 +113,9 @@ window.addEventListener('load', onLoad());
 
 function onLoad() {
     $.getJSON("{% url 'rss:allitemsid' rss.id %}", function(itemsIdList) {
-            galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}", itemsIdList);
-            galleryManager.fill()
-        });
+        galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}", itemsIdList);
+        galleryManager.fill()
+    });
 }
 
 $('#gallery').on('scroll', function() {
