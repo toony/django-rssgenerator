@@ -1,4 +1,4 @@
-function ContentManager(rssRootUrl, itemsIdList) {
+function GalleryManager(rssRootUrl, itemsIdList) {
     this.rssRootUrl = rssRootUrl;
     this.itemsIdList = itemsIdList;
     this.loadOffset = 20;
@@ -16,7 +16,7 @@ function ContentManager(rssRootUrl, itemsIdList) {
         }
 
         $.getJSON(this.getItemSummaryUrl(itemId), function(itemSummary) {
-            contentManager.addItem(new Item(itemSummary));
+            galleryManager.addItem(new Item(itemSummary));
         });
         
         return itemId;
@@ -81,10 +81,10 @@ function ContentManager(rssRootUrl, itemsIdList) {
             $('#picItem' + item.itemSummary['id']).attr('src', this.src);
             //itemElement.css("display", "inline");
             $('#item' + item.itemSummary['id']).delay(500).show().animate({opacity:1},3000);
-            contentManager.itemVisible(item);
+            galleryManager.itemVisible(item);
         };
         preLoadPic.src = item.itemSummary['pic'];
     };
 };
 
-var contentManager = undefined;
+var galleryManager = undefined;

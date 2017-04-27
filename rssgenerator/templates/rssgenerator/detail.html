@@ -105,7 +105,7 @@
     
     <!-- RSS Content -->
     <script src="{% static "itemmanager.js" %}"></script>
-    <script src="{% static "contentmanager.js" %}"></script>
+    <script src="{% static "gallerymanager.js" %}"></script>
     <script src="{% static "common.js" %}"></script>
     
     <script type="text/javascript">
@@ -113,21 +113,21 @@ window.addEventListener('load', onLoad());
 
 function onLoad() {
     $.getJSON("{% url 'rss:allitemsid' rss.id %}", function(itemsIdList) {
-            contentManager = new ContentManager("{% url 'rss:detail' rss.id %}", itemsIdList);
-            contentManager.fill()
+            galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}", itemsIdList);
+            galleryManager.fill()
         });
 }
 
 $('#gallery').on('scroll', function() {
     if($(this).scrollTop() + $(this).innerHeight() + 300 >= $(this)[0].scrollHeight) {
-        contentManager.fill();
+        galleryManager.fill();
     }
 });
 
 var resized;
 $(window).on('resize', function() {
     clearTimeout(resized);
-    resized = setTimeout(function() { contentManager.fill(); }, 1000);
+    resized = setTimeout(function() { galleryManager.fill(); }, 1000);
 });
     </script>
 </body>
