@@ -24,6 +24,9 @@
                         <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">Show all</a></li>
                         <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgalleryrandom' rss.id %}'})" href="#">Random all</a></li>
                         <li><a href="{% url 'rss:rssstream' rss.id %}">Subscribe</a></li>
+                        <li>
+                            <input name="itemSearch" type="text" id="itemSearch" placeholder="Search here for items" onkeypress="search(event);"/>
+                        </li>
                     </ul>
                 </nav>
             </div>
@@ -115,6 +118,19 @@ function onLoad() {
         galleryManager.init(itemsIdList);
         galleryManager.fill()
     });
+}
+
+function search(e){
+    if(e.keyCode === 13){
+        var query = document.getElementById("itemSearch").value;
+        $.getJSON("{% url 'rss:searchitem' rss.id %}?q=" + query, function(itemsIdList) {
+            galleryManager.init(itemsIdList);
+            galleryManager.fill()
+        });
+        
+        document.getElementById("itemSearch").value = null;
+        document.getElementById("tag-menu").checked = false;
+    }
 }
     </script>
 </body>
