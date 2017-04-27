@@ -25,6 +25,7 @@ function GalleryManager(rssRootUrl) {
     });
 
     this.init = function(itemsIdList) {
+        $('#gallery #progressBar').width('0%');
         $('#gallery #content').empty();
 
         this.itemsIdList = itemsIdList;
