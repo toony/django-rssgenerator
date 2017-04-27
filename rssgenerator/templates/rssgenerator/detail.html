@@ -110,7 +110,7 @@
 window.addEventListener('load', onLoad());
 
 function onLoad() {
-    $.getJSON("{% url 'rss:allitemsid' rss.id %}", function(itemsIdList) {
+    $.getJSON("{% url 'rss:searchitem' rss.id %}?q=", function(itemsIdList) {
         galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}");
         galleryManager.init(itemsIdList);
         galleryManager.fill()
