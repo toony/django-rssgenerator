@@ -8,6 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils import formats
 from django.templatetags.static import static
+from django.db.models import Q
 
 from rssgenerator.models import Rss, Items, Links
 
@@ -82,7 +83,7 @@ def searchItem(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
 
     ids = []
-    for item in rss.items_set.filter(title__icontains=query).values("id").order_by("-pub_date"):
+    for item in rss.items_set.filter(Q(title__icontains=query) | Q(summary__icontains=query)).values("id").order_by("-pub_date"):
         ids.append(item["id"])
 
     return HttpResponse(json.dumps(ids), content_type="application/json")
