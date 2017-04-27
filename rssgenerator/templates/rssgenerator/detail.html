@@ -115,18 +115,6 @@ function onLoad() {
         galleryManager.fill()
     });
 }
-
-$('#gallery').on('scroll', function() {
-    if($(this).scrollTop() + $(this).innerHeight() + 300 >= $(this)[0].scrollHeight) {
-        galleryManager.fill();
-    }
-});
-
-var resized;
-$(window).on('resize', function() {
-    clearTimeout(resized);
-    resized = setTimeout(function() { galleryManager.fill(); }, 1000);
-});
     </script>
 </body>
 </html>

@@ -3,14 +3,33 @@ function GalleryManager(rssRootUrl, itemsIdList) {
     this.itemsIdList = itemsIdList;
     this.loadOffset = 20;
     this.loadingItemsCount = 0;
+    this.itemsDisplayed = 0;
     
     this.curentContentHeight = 0;
     
     this.itemsLoaded = {};
     
     $('#gallery').append(jQuery('<div/>')
+        .attr('id', 'progress')
+        .addClass('divProgress'));
+        
+    $('#progress').append(jQuery('<div/>')
+        .attr('id', 'progressBar')
+        .addClass('divProgressBar'));
+    
+    $('#gallery').append(jQuery('<div/>')
+        .attr('id', 'contentFix')
+        .addClass('divContentFix'));
+        
+    $('#contentFix').append(jQuery('<div/>')
         .attr('id', 'content')
         .addClass('divContent'));
+        
+    $('#contentFix').on('scroll', function() {
+        if($(this).scrollTop() + $(this).innerHeight() + 300 >= $(this)[0].scrollHeight) {
+            galleryManager.fill();
+        }
+    });
     
     this.loadItem = function() {
         itemId = this.getIdToLoad();
@@ -61,7 +80,15 @@ function GalleryManager(rssRootUrl, itemsIdList) {
         }
     };
     
+    this.refreshProgressBar = function() {
+        var progress = this.itemsDisplayed * 100 / this.itemsIdList.length;
+        $('#gallery #progress #progressBar').width(progress + '%');
+    }
+    
     this.itemVisible = function(item) {
+        this.itemsDisplayed++;
+        this.refreshProgressBar();
+        
         this.loadingItemsCount--;
         
         if(this.loadingItemsCount == 0) {
@@ -92,3 +119,9 @@ function GalleryManager(rssRootUrl, itemsIdList) {
 };
 
 var galleryManager = undefined;
+
+var resized;
+$(window).on('resize', function() {
+    clearTimeout(resized);
+    resized = setTimeout(function() { galleryManager.fill(); }, 1000);
+});

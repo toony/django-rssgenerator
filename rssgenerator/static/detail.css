@@ -29,28 +29,35 @@ header {
     font-size: 24px;
 }
 
-#test {
+#gallery {
+    background-color: lightgray;
     margin: 0 auto;
     padding: 0;
     position: absolute;
     width: 100%;
     height: auto;
     bottom: 0;
-    top: 70px;
-    border-collapse: separate;
-    clear: both;
-    overflow: auto;
+    top: 60px;
 }
 
-#gallery {
-    background-color: lightgray;
-    margin: 0 auto;
-    padding: 10px 0 0 0;
+.divProgress {
+    width: 100%;
+    height: 3px;
+    padding: 0;
+}
+
+.divProgressBar {
+    height: 100%;
+    width: 0%;
+    background-color: orange;
+}
+
+.divContentFix {
+    top: 10px;
     position: absolute;
     width: 100%;
     height: auto;
     bottom: 0;
-    top: 60px;
     border-collapse: separate;
     clear: both;
     overflow: auto;
