@@ -8,6 +8,10 @@ function GalleryManager(rssRootUrl, itemsIdList) {
     
     this.itemsLoaded = {};
     
+    $('#gallery').append(jQuery('<div/>')
+        .attr('id', 'content')
+        .addClass('divContent'));
+    
     this.loadItem = function() {
         itemId = this.getIdToLoad();
         
