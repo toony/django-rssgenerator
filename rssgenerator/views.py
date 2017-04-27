@@ -85,3 +85,13 @@ def itemsummary(request, rss_id, item_id):
         itemSummary['pic'] = static('noLinks.png')
     
     return HttpResponse(json.dumps(itemSummary), content_type="application/json")
+
+def searchItem(request, rss_id):
+    query = request.GET.get('q')
+    rss = get_object_or_404(Rss, id=rss_id)
+
+    ids = []
+    for item in rss.items_set.filter(title__icontains=query).values("id").order_by("-pub_date"):
+        ids.append(item["id"])
+
+    return HttpResponse(json.dumps(ids), content_type="application/json")
