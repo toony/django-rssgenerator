@@ -10,7 +10,6 @@ function Item(itemSummary) {
             .append(img);
     }
     
-    // <div class="divItem" style="display:none">...</div>
     this.itemElement = jQuery('<figure/>')
         .attr('id', 'item' + this.itemSummary['id'])
         .addClass('thumb')
