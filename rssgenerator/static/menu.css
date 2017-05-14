@@ -1,20 +1,20 @@
 .menu-bar {
-    color:#FFF;
-    font-size:26px;
-    cursor:pointer;
-    padding:10px 12px;
-    margin-left:10px;
-    margin-top:5px;
-    margin-bottom:5px;
+    color: #FFF;
+    font-size: 26px;
+    cursor: pointer;
+    padding: 10px 12px;
+    margin-left: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .menu-bar:hover {
-    background-color:rgba(0, 0, 0, 0.1);
-    border-radius:50px;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
 }
 
 #tag-menu {
-    display:none;
+    display: none;
 }
 
 #tag-menu:checked ~ div.drawer {
@@ -24,12 +24,12 @@
 
 .drawer {
     top: 60px;
-    position:fixed;
-    left:-200px;
-    background-color:#06C;
-    height:100%;
-    z-index:100;
-    width:200px;
+    position: fixed;
+    left: -200px;
+    background-color: #06C;
+    height: 100%;
+    z-index: 100;
+    width: 200px;
     animation: slide-out 0.5s ease;
     animation-fill-mode: forwards;
 }
@@ -39,38 +39,38 @@
 }
 
 .drawer ul li {
-    list-style:none;
+    list-style: none;
 }
 
 .drawer ul li .drawer-entry {
-    padding:10px 15px;
-    text-decoration:none;
-    display:block;
-    color:#FFF;
-    border-top:1px solid #039;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    color: #FFF;
+    border-top: 1px solid #039;
 }
 
 .drawer ul li .drawer-entry:hover{
-    background-color:rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .drawer ul li #drawer-search {
-    padding:10px 15px;
-    text-decoration:none;
-    display:block;
-    border-top:1px solid #039;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+    border-top: 1px solid #039;
 }
 
 .drawer ul li #drawer-main-actions {
-    padding:10px 15px;
-    display:block;
-    border-top:1px solid #039;
+    padding: 10px 15px;
+    display: block;
+    border-top: 1px solid #039;
     padding-left: 25px;
 }
 
 .drawer ul li #drawer-main-actions a {
-    text-decoration:none;
-    color:#FFF;
+    text-decoration: none;
+    color: #FFF;
     
     font-size: 25px;
     margin: 0 10px 0 10px;
