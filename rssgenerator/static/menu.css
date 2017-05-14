@@ -42,7 +42,7 @@
     list-style:none;
 }
 
-.drawer ul li a {
+.drawer ul li .drawer-entry {
     padding:10px 30px;
     text-decoration:none;
     display:block;
@@ -50,15 +50,33 @@
     border-top:1px solid #039;
 }
 
-.drawer ul li a:hover{
+.drawer ul li .drawer-entry:hover{
     background-color:rgba(0, 0, 0, 0.1);
 }
 
-.drawer ul li div {
+.drawer ul li #drawer-search {
     padding:10px 30px;
     text-decoration:none;
     display:block;
     border-top:1px solid #039;
+}
+
+.drawer ul li #drawer-context-actions {
+    padding:10px 30px;
+    display:block;
+    border-top:1px solid #039;
+}
+
+.drawer ul li #drawer-context-actions a {
+    text-decoration:none;
+    color:#FFF;
+    
+    font-size: 25px;
+    margin-right: 10px;
+}
+
+.drawer ul li #drawer-context-actions a:hover {
+    color: grey;
 }
 
 @keyframes slide-in {
