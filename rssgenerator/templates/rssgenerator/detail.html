@@ -25,7 +25,9 @@
                         <li><a onclick="displayGallery({ 'data': '{% url 'rss:rssgalleryrandom' rss.id %}'})" href="#">Random all</a></li>
                         <li><a href="{% url 'rss:rssstream' rss.id %}">Subscribe</a></li>
                         <li>
-                            <input name="itemSearch" type="text" id="itemSearch" placeholder="Search here for items" onkeypress="search(event);"/>
+                            <div>
+                                <input name="itemSearch" type="text" style="width: 130px;" id="itemSearch" placeholder="Search for items" onkeypress="search(event);"/>
+                            </div>
                         </li>
                     </ul>
                 </nav>

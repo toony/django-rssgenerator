@@ -54,11 +54,11 @@
     background-color:rgba(0, 0, 0, 0.1);
 }
 
-.drawer ul li a i {
-    width:50px;
-    height:35px;
-    text-align:center;
-    padding-top:15px;
+.drawer ul li div {
+    padding:10px 30px;
+    text-decoration:none;
+    display:block;
+    border-top:1px solid #039;
 }
 
 @keyframes slide-in {
