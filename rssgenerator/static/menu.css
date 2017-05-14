@@ -61,21 +61,22 @@
     border-top:1px solid #039;
 }
 
-.drawer ul li #drawer-context-actions {
+.drawer ul li #drawer-main-actions {
     padding:10px 15px;
     display:block;
     border-top:1px solid #039;
+    padding-left: 25px;
 }
 
-.drawer ul li #drawer-context-actions a {
+.drawer ul li #drawer-main-actions a {
     text-decoration:none;
     color:#FFF;
     
     font-size: 25px;
-    margin-right: 10px;
+    margin: 0 10px 0 10px;
 }
 
-.drawer ul li #drawer-context-actions a:hover {
+.drawer ul li #drawer-main-actions a:hover {
     color: grey;
 }
 
