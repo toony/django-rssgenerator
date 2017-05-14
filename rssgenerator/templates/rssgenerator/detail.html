@@ -26,7 +26,7 @@
                                 <a title="Main view" class="fa fa-home" href=""></a>
                             </div>
                         </li>
-                        <li><a class="drawer-entry" onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">Show all</a></li>
+                        <li><a class="fa fa-play drawer-entry" onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">&nbsp;Slideshow</a></li>
                         <li><a class="fa fa-random drawer-entry" onclick="displayGallery({ 'data': '{% url 'rss:rssgalleryrandom' rss.id %}'})" href="#">&nbsp;Random slideshow</a></li>
                         <li><a class="fa fa-rss drawer-entry" href="{% url 'rss:rssstream' rss.id %}">&nbsp; Subscribe</a></li>
                         <li>
