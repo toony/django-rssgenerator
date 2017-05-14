@@ -24,10 +24,11 @@ function GalleryManager(rssRootUrl) {
         }
     });
 
-    this.init = function(itemsIdList) {
+    this.init = function(title, itemsIdList) {
         $('#gallery #progressBar').width('0%');
         $('#gallery #content').empty();
 
+        this.title = title;
         this.itemsIdList = itemsIdList;
         this.loadingItemsCount = 0;
         this.itemsDisplayed = 0;
@@ -35,6 +36,10 @@ function GalleryManager(rssRootUrl) {
         this.curentContentHeight = 0;
 
         this.itemsLoaded = {};
+        
+        if($('#galleryTitle')) {
+            $('#galleryTitle').text(this.title + " - " + this.itemsIdList.length + " items");
+        }
     }
 
     this.loadItem = function() {

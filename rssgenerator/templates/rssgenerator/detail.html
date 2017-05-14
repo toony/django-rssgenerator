@@ -37,7 +37,7 @@
                     </ul>
                 </nav>
             </div>
-            <span class="title">{{ rss.title }} - {{rss.items_set.all.count}} items</span>
+            <span id="galleryTitle" class="title">{{ rss.title }} - {{rss.items_set.all.count}} items</span>
         </div>
     </header>
     
@@ -122,7 +122,7 @@ window.addEventListener('load', onLoad());
 function onLoad() {
     $.getJSON("{% url 'rss:searchitem' rss.id %}?q=", function(itemsIdList) {
         galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}");
-        galleryManager.init(itemsIdList);
+        galleryManager.init("{{ rss.title }}", itemsIdList);
         galleryManager.fill()
     });
 }
@@ -131,7 +131,7 @@ function search(e){
     if(e.keyCode === 13){
         var query = document.getElementById("itemSearch").value;
         $.getJSON("{% url 'rss:searchitem' rss.id %}?q=" + query, function(itemsIdList) {
-            galleryManager.init(itemsIdList);
+            galleryManager.init("{{ rss.title }}", itemsIdList);
             galleryManager.fill()
         });
         
