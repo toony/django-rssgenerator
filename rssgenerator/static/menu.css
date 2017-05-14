@@ -43,7 +43,7 @@
 }
 
 .drawer ul li .drawer-entry {
-    padding:10px 30px;
+    padding:10px 15px;
     text-decoration:none;
     display:block;
     color:#FFF;
@@ -55,14 +55,14 @@
 }
 
 .drawer ul li #drawer-search {
-    padding:10px 30px;
+    padding:10px 15px;
     text-decoration:none;
     display:block;
     border-top:1px solid #039;
 }
 
 .drawer ul li #drawer-context-actions {
-    padding:10px 30px;
+    padding:10px 15px;
     display:block;
     border-top:1px solid #039;
 }
