@@ -28,7 +28,7 @@
                         </li>
                         <li><a class="drawer-entry" onclick="displayGallery({ 'data': '{% url 'rss:rssgallery' rss.id %}'})" href="#">Show all</a></li>
                         <li><a class="drawer-entry" onclick="displayGallery({ 'data': '{% url 'rss:rssgalleryrandom' rss.id %}'})" href="#">Random all</a></li>
-                        <li><a class="drawer-entry" href="{% url 'rss:rssstream' rss.id %}">Subscribe</a></li>
+                        <li><a class="fa fa-rss drawer-entry" href="{% url 'rss:rssstream' rss.id %}">&nbsp; Subscribe</a></li>
                         <li>
                             <div id="drawer-search">
                                 <input name="itemSearch" type="text" style="width: 130px;" id="itemSearch" placeholder="Search for items" onkeypress="search(event);"/>
