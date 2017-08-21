@@ -32,5 +32,4 @@ function Item(itemSummary) {
         .addClass('thumb')
         .css('opacity', '0')
         .append(this.thumb());
-//        .click(itemSummary['gallery'], displayGallery);
 };
