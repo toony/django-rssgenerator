@@ -27,6 +27,8 @@ class Items(models.Model):
 class Links(models.Model):
     item = models.ForeignKey(Items)
     link = models.URLField(max_length=1024, null=False)
+    height = models.IntegerField(null=True, editable=False)
+    width = models.IntegerField(null=True, editable=False)
     storeLocaly = models.BooleanField(default=True)
 
 @receiver(post_save, sender=Links)
@@ -36,8 +38,12 @@ def __storeLink(sender, instance, **kwargs):
     if not link.storeLocaly:
         LocalStore.LocalStore(item.rss.id).delete(item.id, link)
         return
-        
-    LocalStore.LocalStore(item.rss.id).store(item.id, link)
+
+    infos = LocalStore.LocalStore(item.rss.id).store(item.id, link)
+
+    Links.objects.filter(id = link.id) \
+                 .update(height = infos ['h'],
+                         width = infos['w'])
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):

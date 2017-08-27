@@ -72,11 +72,16 @@ class LocalStore:
             {'User-agent':
                 'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'
             })).read()
-        dstFile = open(self.__getLinkFilePath(itemId, link), 'w')
+            
+        linkFilePath = self.__getLinkFilePath(itemId, link);
+        
+        dstFile = open(linkFilePath, 'w')
         dstFile.write(response)
         dstFile.close()
 
-    def info(self, itemId, link):
+        return self.getHeightWidth(itemId, link)
+
+    def getHeightWidth(self, itemId, link):
         if not link.storeLocaly:
             return {}
              
