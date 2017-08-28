@@ -16,14 +16,14 @@ manageDb() {
     deactivate
 }
 
-if [ $# -ne 0 ]; then
-    option=$1
-    shift
+mode=upgrade
+if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
+    mode=install
 fi
 
-if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
-    manageDb
+manageDb
 
+if [ ${mode} == 'install' ]; then    
     . /opt/rssgenerator-env/bin/activate
     echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell
     deactivate
@@ -31,12 +31,5 @@ if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
     chown -R www-data:www-data /opt/rssgenerator-data
     finish
 fi
-
-case "${option}" in
-    "update")
-        manageDb
-        unset option
-        ;;
-esac
 
 finish ${option} $@
