@@ -64,8 +64,6 @@ COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
 
 COPY docker/init-rssgenerator.sh /init-rssgenerator.sh
 RUN chmod +x /init-rssgenerator.sh
-
-VOLUME ["/opt/rssgenerator-data", "/var/log"]
  
 EXPOSE 80
 
