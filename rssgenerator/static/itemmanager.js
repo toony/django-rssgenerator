@@ -52,7 +52,7 @@ function Item(itemSummary) {
             .addClass('fa')
             .addClass('fa-play-circle-o')
             .addClass('fa-2x')
-            .click(itemSummary['gallery'], displayGallery);
+            .click({ 'url': itemSummary['gallery'] }, displayGallery);
             
         var infos = jQuery('<div/>')
             .addClass('thumb-menu-item')

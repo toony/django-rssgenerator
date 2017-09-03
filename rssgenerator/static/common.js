@@ -7,9 +7,22 @@ function displayGallery(event) {
         // for example:
         index: 0 // start at first slide
     };
+
+    postData = {
+        'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+    }
     
-    $.getJSON(event['data'], function(galleryInfos) {
-        var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
-        gallery.init();
-    });
+    if ('itemsIdList' in event['data']) {
+        postData['itemsIdList'] = event['data']['itemsIdList'];
+    }
+
+    $.post(
+        event['data']['url'],
+        postData,
+        function(galleryInfos, textStatus) {
+            var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, galleryInfos, options);
+            gallery.init();
+        },
+        "json"
+    );
 }
