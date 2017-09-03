@@ -14,7 +14,6 @@ urlpatterns = [
         ), name='detail'),
     url(r'^(?P<rss_id>\d+)/rss/$', 'rssgenerator.views.rssstream', name='rssstream'),
     url(r'^(?P<rss_id>\d+)/gallery$', 'rssgenerator.views.rssgallery', name='rssgallery'),
-    url(r'^(?P<rss_id>\d+)/gallery/random$', 'rssgenerator.views.rssgalleryrandom', name='rssgalleryrandom'),
     url(r'^(?P<rss_id>\d+)/search$', 'rssgenerator.views.searchItem', name='searchitem'),
     url(r'^(?P<rss_id>\d+)/(?P<item_id>\d+)/summary$', 'rssgenerator.views.itemsummary', name='itemsummary'),
     url(r'^(?P<rss_id>\d+)/(?P<item_id>\d+)/gallery$', 'rssgenerator.views.itemgallery', name='itemgallery'),

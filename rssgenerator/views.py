@@ -65,18 +65,6 @@ def rssgallery(request, rss_id):
 
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
-def rssgalleryrandom(request, rss_id):
-    if request.method != 'POST':
-        return HttpResponseBadRequest('POST method must be used', content_type="text/plain")
-
-    if 'itemsIdList[]' not in request.POST:
-        return HttpResponseBadRequest('missing mandatory parameter \'itemsIdList[]\'', content_type="text/plain")
-
-    rssGalleryIndex = getRssgallery(rss_id, request.POST.getlist('itemsIdList[]'))
-    random.shuffle(rssGalleryIndex)
-
-    return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
-
 def itemsummary(request, rss_id, item_id):        
     rss = get_object_or_404(Rss, id=rss_id)
     item = get_object_or_404(Items, id=item_id)
