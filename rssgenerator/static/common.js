@@ -9,7 +9,8 @@ function displayGallery(event) {
     };
 
     postData = {
-        'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val()
+        'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val(),
+        'random': event['data']['random']
     }
     
     if ('itemsIdList' in event['data']) {

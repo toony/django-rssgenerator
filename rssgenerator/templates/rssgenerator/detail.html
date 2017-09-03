@@ -25,7 +25,7 @@
                             <div id="drawer-main-actions">
                                 <a title="Main view" class="fa fa-home" href=""></a>
                                 <a title="Slideshow all items" class="fa fa-play" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssgallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList()}})" href="#"></a>
-                                <a title="Slideshow all items randomly" class="fa fa-random" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssgalleryrandom' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList()}})" href="#"></a>
+                                <a title="Slideshow all items randomly" class="fa fa-random" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssgallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList(), 'random': 'true'}})" href="#"></a>
                             </div>
                         </li>
                         <li>
