@@ -3,7 +3,7 @@ import RssToStream
 import LocalStore
 import random
 
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils import formats
@@ -31,12 +31,12 @@ def itemgallery(request, rss_id, item_id):
     
     return HttpResponse(json.dumps(itemGalleryIndex), content_type="application/json")
 
-def getRssgallery(rss_id):
+def getRssgallery(rss_id, itemsIdList):
     rss = get_object_or_404(Rss, id=rss_id)
     localStore = LocalStore.LocalStore(rss_id)
 
     rssGalleryIndex = []
-    for item in rss.items_set.all():
+    for item in rss.items_set.filter(id__in = itemsIdList):
         for link in item.links_set.all():
             rssGalleryIndex.append(getLinkInfo(rss.id, item.id, link))
             
@@ -51,14 +51,26 @@ def getLinkInfo(rssId, itemId, link):
     return linkInfos
 
 def rssgallery(request, rss_id):
-    rssGalleryIndex = getRssgallery(rss_id)
+    if request.method != 'POST':
+        return HttpResponseBadRequest('POST method must be used', content_type="text/plain")
+
+    if 'itemsIdList[]' not in request.POST:
+        return HttpResponseBadRequest('missing mandatory parameter \'itemsIdList[]\'', content_type="text/plain")
+
+    rssGalleryIndex = getRssgallery(rss_id, request.POST.getlist('itemsIdList[]'))
 
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
 def rssgalleryrandom(request, rss_id):
-    rssGalleryIndex = getRssgallery(rss_id)
+    if request.method != 'POST':
+        return HttpResponseBadRequest('POST method must be used', content_type="text/plain")
+
+    if 'itemsIdList[]' not in request.POST:
+        return HttpResponseBadRequest('missing mandatory parameter \'itemsIdList[]\'', content_type="text/plain")
+
+    rssGalleryIndex = getRssgallery(rss_id, request.POST.getlist('itemsIdList[]'))
     random.shuffle(rssGalleryIndex)
-    
+
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
 def itemsummary(request, rss_id, item_id):        
