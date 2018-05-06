@@ -15,7 +15,7 @@ import datetime
 import urllib2
 
 @background(schedule=datetime.datetime.now())
-def storeLink(linkId, linkUrl, linkFilePath):
+def storeLink(linkId, linkUrl, linkFilePath, linkFileThumb):
     response = urllib2.urlopen(urllib2.Request(linkUrl,
         None,
         {'User-agent':
@@ -30,3 +30,5 @@ def storeLink(linkId, linkUrl, linkFilePath):
     Links.objects.filter(id = linkId) \
                  .update(height = infos['h'],
                          width = infos['w'])
+
+    images.createThumb(linkFilePath, linkFileThumb)

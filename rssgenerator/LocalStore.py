@@ -27,6 +27,10 @@ class LocalStore:
     def __getLinkFilePath(self, itemId, link):
         return os.path.join(self.__getItemPath(itemId), str(link.id))
 
+    def __getLinkThumbPath(self, itemId, link):
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        return linkFilePath + '.thumb'
+
     def get(self, itemId, link):
         if not link.storeLocaly:
             return link.link
@@ -42,35 +46,37 @@ class LocalStore:
         linkFilePath = self.__getLinkFilePath(itemId, link)
         if not os.path.exists(linkFilePath):
             return
-        
+
         mime = magic.Magic(mime=True)
         return mime.from_file(linkFilePath)
-        
+
     def __removeItemPath(self, itemId):
         itemPath = self.__getItemPath(itemId)
-        
+
         try:
             os.rmdir(itemPath)
         except OSError:
             pass
-        
+
     def delete(self, itemId, link): 
         linkFilePath = self.__getLinkFilePath(itemId, link)
-        if not os.path.exists(linkFilePath):
-            self.__removeItemPath(itemId)
-            return
-                
-        os.remove(linkFilePath)
-        
+        if os.path.exists(linkFilePath):
+            os.remove(linkFilePath)
+
+        linkFileThumb = self.__getLinkThumbPath(itemId, link)
+        if os.path.exists(linkFileThumb):
+            os.remove(linkFileThumb)
+
         self.__removeItemPath(itemId)
-            
+
     def store(self, itemId, link):
         itemPath = self.__getItemPath(itemId)
         if not os.path.exists(itemPath):
             os.makedirs(itemPath)
-            
+
         linkFilePath = self.__getLinkFilePath(itemId, link)
-        storeLink(link.id, link.link, linkFilePath)
+        linkFileThumb = self.__getLinkThumbPath(itemId, link)
+        storeLink(link.id, link.link, linkFilePath, linkFileThumb)
 
     def setHeightWidth(self, itemId, link):
         if not link.storeLocaly:
