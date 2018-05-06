@@ -11,10 +11,10 @@ from django.conf import settings
 from rssgenerator.models import Links
 from rssgenerator.tools import images
 
+from rssgenerator.tasks import storeLink
+
 import os
-import struct
 import magic
-import urllib2
 
 class LocalStore:
     def __init__(self,
@@ -68,23 +68,9 @@ class LocalStore:
         itemPath = self.__getItemPath(itemId)
         if not os.path.exists(itemPath):
             os.makedirs(itemPath)
-
-        response = urllib2.urlopen(urllib2.Request(link.link,
-            None,
-            {'User-agent':
-                'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'
-            })).read()
             
-        linkFilePath = self.__getLinkFilePath(itemId, link);
-        
-        dstFile = open(linkFilePath, 'w')
-        dstFile.write(response)
-        dstFile.close()
-
-        infos = self.setHeightWidth(itemId, link)
-        Links.objects.filter(id = link.id) \
-                     .update(height = infos['h'],
-                             width = infos['w'])
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        storeLink(link.id, link.link, linkFilePath)
 
     def setHeightWidth(self, itemId, link):
         if not link.storeLocaly:
