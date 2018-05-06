@@ -3,9 +3,6 @@ from django.conf import settings
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
-import LocalStore
-
-
 class Rss(models.Model):
     title = models.CharField(max_length=256, null=False)
     description = models.CharField(max_length=256, null=False)
@@ -31,6 +28,8 @@ class Links(models.Model):
     width = models.IntegerField(null=True, editable=False)
     storeLocaly = models.BooleanField(default=True)
 
+import LocalStore
+
 @receiver(post_save, sender=Links)
 def __storeLink(sender, instance, **kwargs):
     link = instance
@@ -39,11 +38,7 @@ def __storeLink(sender, instance, **kwargs):
         LocalStore.LocalStore(item.rss.id).delete(item.id, link)
         return
 
-    infos = LocalStore.LocalStore(item.rss.id).store(item.id, link)
-
-    Links.objects.filter(id = link.id) \
-                 .update(height = infos ['h'],
-                         width = infos['w'])
+    LocalStore.LocalStore(item.rss.id).store(item.id, link)
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):

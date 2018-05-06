@@ -8,6 +8,7 @@ __author__ = "Anthony Prades <toony.github@chezouam.net>"
 _generator_name = __name__ + "-" + ".".join(map(str, __version__))
 
 from django.conf import settings
+from rssgenerator.models import Links
 
 import os
 import struct
@@ -79,7 +80,11 @@ class LocalStore:
         dstFile.write(response)
         dstFile.close()
 
-        return self.getHeightWidth(itemId, link)
+        infos = self.getHeightWidth(itemId, link)
+        Links.objects.filter(id = link.id) \
+                     .update(height = infos['h'],
+                             width = infos['w'])
+
 
     def getHeightWidth(self, itemId, link):
         if not link.storeLocaly:
