@@ -15,7 +15,7 @@ def updateLinksHeightWidth(apps, schema_editor):
         
         for item in rss.items_set.all():
             for link in item.links_set.all():
-                infos = localStore.getHeightWidth(item.id, link)
+                infos = localStore.setHeightWidth(item.id, link)
 
                 Links.objects.filter(id = link.id) \
                              .update(height = infos ['h'],
