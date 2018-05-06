@@ -78,3 +78,13 @@ class LocalStore:
              
         linkFilePath = self.__getLinkFilePath(itemId, link)
         return images.getHeightWidth(linkFilePath)
+
+    def isPresentLocaly(self, itemId, link):
+        if not link.storeLocaly:
+            return False;
+
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkFilePath):
+            return False
+
+        return True

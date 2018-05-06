@@ -43,10 +43,17 @@ def getRssgallery(rss_id, itemsIdList):
     return rssGalleryIndex
 
 def getLinkInfo(rssId, itemId, link):
-    linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rssId, itemId, link.id]),
-                  'h': link.height,
-                  'w': link.width
-                }
+    if not link.storeLocaly \
+       or not LocalStore.LocalStore(rssId).isPresentLocaly(itemId, link):
+        linkInfos = { 'src': link.link,
+                      'h': 200,
+                      'w': 200
+                    }
+    else:
+        linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rssId, itemId, link.id]),
+                      'h': link.height,
+                      'w': link.width
+                    }
 
     return linkInfos
 
@@ -79,7 +86,14 @@ def itemsummary(request, rss_id, item_id):
     
     if item.links_set.all().count() > 0:
         itemPicPosition = random.random() * item.links_set.all().count()
-        itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id])
+        link = item.links_set.all()[itemPicPosition:itemPicPosition+1].get()
+        
+        if not link.storeLocaly \
+           or not LocalStore.LocalStore(rss_id).isPresentLocaly(item.id, link):
+            itemSummary['pic'] = link.link
+        else:
+            itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id])
+
         itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
     else:
         itemSummary['pic'] = static('noLinks.png')
