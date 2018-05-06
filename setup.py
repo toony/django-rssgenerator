@@ -33,5 +33,6 @@ setup(
         "Django == 1.8",
         "PyRSS2Gen >= 1.1",
         "python-magic",
+        "django-background-tasks == 1.1.13",
     ],
 )
