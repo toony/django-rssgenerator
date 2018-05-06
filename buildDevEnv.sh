@@ -23,7 +23,7 @@ virtualenv rssgenerator-env
 . ./rssgenerator-env/bin/activate
 
 # Install dependencies
-pip install Django==1.8 PyRSS2Gen python-magic
+pip install Django==1.8 PyRSS2Gen python-magic django-background-tasks==1.1.13
 
 # Initialize Django project
 django-admin startproject project
@@ -35,7 +35,7 @@ pushd ${PYENV}"/project" > /dev/null 2>&1
 ln -s ${GIT_CLONE}"/rssgenerator" .
 
 pushd project > /dev/null 2>&1
-sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',/" settings.py
+sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',\n    'background_task',/" settings.py
 echo "RSSGENERATOR_LOCAL_DATA = '${WORKSPACE}/localData'" >> settings.py
 popd
 
