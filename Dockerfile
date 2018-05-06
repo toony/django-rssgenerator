@@ -36,7 +36,7 @@ RUN cd /opt \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
     && cd /opt/django_rssgenerator/django_rssgenerator \
-    && sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',/" settings.py \
+    && sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',\n    'background_task',/" settings.py \
     && sed -i -e "s#^\(TIME_ZONE =.\+$\)#TIME_ZONE = 'Europe/Paris'#" settings.py \
     && sed -i -e "s#^\(.\+'NAME': \).\+db.sqlite3.\+\$#\1'/opt/rssgenerator-data/rssgenerator.sqlite3'#" settings.py \
     && echo "RSSGENERATOR_LOCAL_DATA = '/opt/rssgenerator-data/localData'" >> settings.py \
@@ -64,6 +64,9 @@ COPY docker/supervisor.conf /etc/supervisor/conf.d/rssgenerator.conf
 
 COPY docker/init-rssgenerator.sh /init-rssgenerator.sh
 RUN chmod +x /init-rssgenerator.sh
+
+COPY docker/processAsyncTasks.sh /processAsyncTasks.sh
+RUN chmod +x /processAsyncTasks.sh
  
 EXPOSE 80
 
