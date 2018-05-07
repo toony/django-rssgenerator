@@ -3,12 +3,25 @@ MAINTAINER Anthony Prades <toony.github@chezouam.net>
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-	--no-install-recommends \
+    --no-install-recommends \
     python \
     virtualenv \
     nginx \
     supervisor \
     libmagic1 \
+    python-dev \
+    python-setuptools \
+    build-essential \
+    python-tk \
+    libjpeg-dev \
+    zlib1g-dev \
+    tcl8.6-dev \
+    tk8.6-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -51,6 +64,22 @@ RUN cd /opt \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get remove --purge -yq \
+    python-dev \
+    python-setuptools \
+    build-essential \
+    python-tk \
+    libjpeg-dev \
+    zlib1g-dev \
+    tcl8.6-dev \
+    tk8.6-dev \
+    libfreetype6-dev \
+    liblcms2-dev \
+    libwebp-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    && apt-get autoremove --purge -yq
 
 COPY docker/djangoProjet-urls.py /opt/django_rssgenerator/django_rssgenerator/urls.py
 
