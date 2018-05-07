@@ -31,24 +31,29 @@ class LocalStore:
         linkFilePath = self.__getLinkFilePath(itemId, link)
         return linkFilePath + '.thumb'
 
-    def get(self, itemId, link):
+    def get(self, itemId, link, thumb=False):
         if not link.storeLocaly:
-            return link.link
-             
-        linkFilePath = self.__getLinkFilePath(itemId, link)
-        if not os.path.exists(linkFilePath):
-            return link.link
-        
-        with open(linkFilePath, "rb") as f:
-            return f.read()
+            return {'content': link.link}
 
-    def contentType(self, itemId, link):
-        linkFilePath = self.__getLinkFilePath(itemId, link)
-        if not os.path.exists(linkFilePath):
-            return
+        if thumb:
+            linkPath = self.__getLinkThumbPath(itemId, link)
+            if not os.path.exists(linkPath):
+                # fdf
+                print "popop"
+            else:
+                with open(linkFilePath, "rb") as f:
+                    return {'content': f.read(),
+                            'type': magic.Magic(mime=True).from_file(linkPath)
+                            }
 
-        mime = magic.Magic(mime=True)
-        return mime.from_file(linkFilePath)
+        linkPath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkPath):
+            return {'content': link.link}
+
+        with open(linkPath, "rb") as f:
+            return {'content': f.read(),
+                    'type': magic.Magic(mime=True).from_file(linkPath)
+                    }
 
     def __removeItemPath(self, itemId):
         itemPath = self.__getItemPath(itemId)
