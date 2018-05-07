@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-rssgenerator',
-    version = '0.12',
+    version = '0.13',
     packages = ['rssgenerator'],
     include_package_data = True,
     license = 'GNU GPLv3+',
