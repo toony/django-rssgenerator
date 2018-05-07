@@ -32,3 +32,7 @@ def storeLink(linkId, linkUrl, linkFilePath, linkFileThumb):
                          width = infos['w'])
 
     images.createThumb(linkFilePath, linkFileThumb)
+
+@background(schedule=datetime.datetime.now())
+def createLinkThumbnail(linkFilePath, linkFileThumb):
+    images.createThumb(linkFilePath, linkFileThumb)
