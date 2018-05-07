@@ -11,7 +11,7 @@ from django.conf import settings
 from rssgenerator.models import Links
 from rssgenerator.tools import images
 
-from rssgenerator.tasks import storeLink
+from rssgenerator.tasks import storeLink, createLinkThumbnail
 
 import os
 import magic
@@ -35,24 +35,26 @@ class LocalStore:
         if not link.storeLocaly:
             return {'content': link.link}
 
+        linkItemPath = self.__getLinkFilePath(itemId, link)
+
         if thumb:
-            linkPath = self.__getLinkThumbPath(itemId, link)
-            if not os.path.exists(linkPath):
-                # fdf
-                print "popop"
+            linkThumbPath = self.__getLinkThumbPath(itemId, link)
+            if not os.path.exists(linkThumbPath):
+                print "not thumb"
+                createLinkThumbnail(linkItemPath, linkThumbPath)
             else:
-                with open(linkFilePath, "rb") as f:
+                print "thumb"
+                with open(linkThumbPath, "rb") as f:
                     return {'content': f.read(),
-                            'type': magic.Magic(mime=True).from_file(linkPath)
+                            'type': magic.Magic(mime=True).from_file(linkThumbPath)
                             }
 
-        linkPath = self.__getLinkFilePath(itemId, link)
-        if not os.path.exists(linkPath):
+        if not os.path.exists(linkItemPath):
             return {'content': link.link}
 
-        with open(linkPath, "rb") as f:
+        with open(linkItemPath, "rb") as f:
             return {'content': f.read(),
-                    'type': magic.Magic(mime=True).from_file(linkPath)
+                    'type': magic.Magic(mime=True).from_file(linkItemPath)
                     }
 
     def __removeItemPath(self, itemId):

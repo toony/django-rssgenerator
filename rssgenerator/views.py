@@ -17,9 +17,16 @@ def rssstream(request, rss_id):
     return HttpResponse(rssToStream.display())
 
 def localstoreretrieve(request, rss_id, item_id, link_id):
+    thumb = False
+    if request.GET.get('thumb', False) in ['true', 'True']:
+        thumb = True
+
     link = get_object_or_404(Links, id=link_id)
     localStore = LocalStore.LocalStore(rss_id)
-    return HttpResponse(localStore.get(item_id, link), localStore.contentType(item_id, link))
+    
+    linkContent = localStore.get(item_id, link, thumb)
+
+    return HttpResponse(linkContent['content'], linkContent['type'])
 
 def itemgallery(request, rss_id, item_id):
     item = get_object_or_404(Items, id=item_id)
@@ -92,7 +99,9 @@ def itemsummary(request, rss_id, item_id):
            or not LocalStore.LocalStore(rss_id).isPresentLocaly(item.id, link):
             itemSummary['pic'] = link.link
         else:
-            itemSummary['pic'] = reverse('rss:localstoreretrieve', args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id])
+            itemSummary['pic'] = reverse('rss:localstoreretrieve',
+                                         args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id]) \
+                                 + "?thumb=True"
 
         itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
     else:
