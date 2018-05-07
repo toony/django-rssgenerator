@@ -31,4 +31,17 @@ def createThumb(linkFilePath, linkFileThumb):
     thumbWidth = int(im.width/(im.height/thumbHeight))
     
     im.thumbnail((thumbWidth, thumbHeight))
-    im.save(linkFileThumb, format='JPEG', quality=80)
+    if im.mode == 'RGBA':
+        background = Image.new("RGB", im.size, (255, 255, 255))
+        background.paste(im, mask=im.split()[3]) # 3 is the alpha channel
+        im.close()
+        im = background
+
+    try:
+        im = im.convert("RGB")
+        im.save(linkFileThumb, format='JPEG', quality=80)
+    except IOError as ioerror:
+        if os.path.exists(linkFileThumb):
+            os.remove(linkFileThumb)
+
+        raise ioerror
