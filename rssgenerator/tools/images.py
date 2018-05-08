@@ -2,7 +2,7 @@
 """RssToStream - Rss stream generator."""
 from __future__ import division
 
-__name__ = "RssToStream"
+__name__ = "Image"
 __version__ = (1, 1, 0)
 __author__ = "Anthony Prades <toony.github@chezouam.net>"
 

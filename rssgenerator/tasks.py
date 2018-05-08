@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """RssToStream - Rss stream generator."""
 
-__name__ = "RssToStream"
+__name__ = "RssGeneratorAsyncTasks"
 __version__ = (1, 1, 0)
 __author__ = "Anthony Prades <toony.github@chezouam.net>"
 
