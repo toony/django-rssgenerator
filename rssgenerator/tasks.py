@@ -12,15 +12,19 @@ from rssgenerator.models import Links
 from rssgenerator.tools import images
 
 import datetime
-import urllib2
+import urllib2, ssl
 
 @background(schedule=datetime.datetime.now())
 def storeLink(linkId, linkUrl, linkFilePath, linkFileThumb):
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
     response = urllib2.urlopen(urllib2.Request(linkUrl,
         None,
         {'User-agent':
             'Mozilla/5.0 (Windows; U; Windows NT 5.1; fr; rv:1.9.1.5) Gecko/20091102 Firefox/3.5.5'
-        })).read()
+        }), context=ctx).read()
         
     dstFile = open(linkFilePath, 'w')
     dstFile.write(response)
