@@ -40,10 +40,8 @@ class LocalStore:
         if thumb:
             linkThumbPath = self.__getLinkThumbPath(itemId, link)
             if not os.path.exists(linkThumbPath):
-                print "not thumb"
                 createLinkThumbnail(linkItemPath, linkThumbPath)
             else:
-                print "thumb"
                 with open(linkThumbPath, "rb") as f:
                     return {'content': f.read(),
                             'type': magic.Magic(mime=True).from_file(linkThumbPath)
