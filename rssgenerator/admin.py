@@ -9,7 +9,7 @@ class LinksInline(admin.TabularInline):
 class ItemsAdmin(admin.ModelAdmin):
     inlines = [LinksInline]
     search_fields =  ['title', 'summary']
-    list_display = ('pub_date', 'title', 'summary', 'linksCount')
+    list_display = ('title', 'summary', 'linksCount', 'pub_date')
     list_per_page = 50
     save_on_top = True
     
