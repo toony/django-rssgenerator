@@ -9,8 +9,9 @@ class LinksInline(admin.TabularInline):
 class ItemsAdmin(admin.ModelAdmin):
     inlines = [LinksInline]
     search_fields =  ['title', 'summary']
-    list_display = ('pub_date', 'title', 'summary')
+    list_display = ('pub_date', 'title', 'summary', 'linksCount')
     list_per_page = 50
+    save_on_top = True
     
 @admin.register(Rss)
 class RssAdmin(admin.ModelAdmin):

@@ -88,7 +88,7 @@ def itemsummary(request, rss_id, item_id):
         'title': item.title,
         'pub_date': formats.date_format(item.pub_date, "DATETIME_FORMAT"),
         'summary': item.summary,
-        'totalLinks': item.links_set.all().count(),
+        'totalLinks': item.linksCount(),
     }
     
     if item.links_set.all().count() > 0:

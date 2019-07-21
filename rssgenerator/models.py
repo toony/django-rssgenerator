@@ -20,6 +20,9 @@ class Items(models.Model):
         
     def __unicode__(self):
         return self.title
+        
+    def linksCount(self):
+        return self.links_set.all().count()
     
 class Links(models.Model):
     item = models.ForeignKey(Items)
