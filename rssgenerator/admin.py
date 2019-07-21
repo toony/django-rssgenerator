@@ -1,5 +1,6 @@
 from django.contrib import admin
 from rssgenerator.models import Rss, Items, Links
+from rssgenerator.forms import ItemsAdminForm
 
 class LinksInline(admin.TabularInline):
     model = Links
@@ -12,6 +13,13 @@ class ItemsAdmin(admin.ModelAdmin):
     list_display = ('title', 'summary', 'linksCount', 'pub_date')
     list_per_page = 50
     save_on_top = True
+    form = ItemsAdminForm
+
+    def save_model(self, request, obj, form, change):
+        obj.save()
+
+        for afile in request.FILES.getlist('localFiles'):
+            print(afile)
     
 @admin.register(Rss)
 class RssAdmin(admin.ModelAdmin):
