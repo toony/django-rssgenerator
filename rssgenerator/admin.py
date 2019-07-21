@@ -5,12 +5,12 @@ class LinksInline(admin.TabularInline):
     model = Links
     extra = 1
 
+@admin.register(Items)
 class ItemsAdmin(admin.ModelAdmin):
     inlines = [LinksInline]
-    search_fields =  ['title']
+    search_fields =  ['title', 'summary']
+    list_display = ('pub_date', 'title', 'summary')
     
+@admin.register(Rss)
 class RssAdmin(admin.ModelAdmin):
     list_display = ('title', 'description')
-
-admin.site.register(Rss, RssAdmin)
-admin.site.register(Items, ItemsAdmin)
