@@ -38,3 +38,8 @@ docker run -d toony/rssgenerator
 Then, connect to: `http://<container ip>/admin`
 
 Default admin account: admin/admin
+
+### Configuring ALLOWED_HOSTS
+```
+docker run -e 'ALLOWED_HOSTS=[IP|FQDN]' -d toony/rssgenerator
+```

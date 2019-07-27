@@ -35,6 +35,7 @@ COPY README.md /opt/rssgenerator-src/README.md
 COPY README.txt /opt/rssgenerator-src/README.txt
 COPY MANIFEST.in /opt/rssgenerator-src/MANIFEST.in
 COPY LICENSE /opt/rssgenerator-src/LICENSE
+COPY docker/configSettings.py /tmp/configSettings.py
 
 RUN cd /opt \
     && mkdir -p rssgenerator-data \
@@ -49,16 +50,12 @@ RUN cd /opt \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
     && cd /opt/django_rssgenerator/django_rssgenerator \
+    && sed -i -e "s#^\(DEBUG =.\+$\)#DEBUG = False#" settings.py \
     && sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',\n    'background_task',/" settings.py \
     && sed -i -e "s#^\(TIME_ZONE =.\+$\)#TIME_ZONE = 'Europe/Paris'#" settings.py \
     && sed -i -e "s#^\(.\+'NAME': \).\+db.sqlite3.\+\$#\1'/opt/rssgenerator-data/rssgenerator.sqlite3'#" settings.py \
-    && echo "RSSGENERATOR_LOCAL_DATA = '/opt/rssgenerator-data/localData'" >> settings.py \
-    && echo 'ADMINS = (' >> settings.py \
-    && echo "('Anthony Prades', 'toony.github@chezouam.net')," >> settings.py \
-    && echo ')' >> settings.py \
-    && echo '' >> settings.py \
-    && echo 'MANAGERS = ADMINS' >> settings.py \
-    && echo "STATIC_ROOT = '/opt/rssgenerator-static'" >> settings.py \
+    && cat /tmp/configSettings.py >> settings.py \
+    && rm /tmp/configSettings.py \
     && cd /opt/django_rssgenerator \
     && python manage.py collectstatic --noinput \
     && cd /opt/django_rssgenerator \

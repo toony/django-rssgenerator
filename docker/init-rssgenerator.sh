@@ -16,11 +16,23 @@ manageDb() {
     deactivate
 }
 
+setUpAllowedHosts() {
+    echo "opop"
+    if [ -z "${ALLOWED_HOSTS}" ]; then
+        echo "opop"
+        ALLOWED_HOSTS='*'
+    fi
+    echo ${ALLOWED_HOSTS}
+    
+    sed -i -e "s#^\(ALLOWED_HOSTS =.\+$\)#ALLOWED_HOSTS = ['${ALLOWED_HOSTS}']#" /opt/django_rssgenerator/django_rssgenerator/settings.py
+}
+
 mode=upgrade
 if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
     mode=install
 fi
 
+setUpAllowedHosts
 manageDb
 
 if [ ${mode} == 'install' ]; then    

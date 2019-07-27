@@ -36,7 +36,15 @@ ln -s ${GIT_CLONE}"/rssgenerator" .
 
 pushd project > /dev/null 2>&1
 sed -i -e "s/\(INSTALLED_APPS =.\+$\)/\1\n    'rssgenerator',\n    'background_task',/" settings.py
-echo "RSSGENERATOR_LOCAL_DATA = '${WORKSPACE}/localData'" >> settings.py
+cat >> settings.py <<EOF
+RSSGENERATOR_LOCAL_DATA = '${WORKSPACE}/localData'
+STATIC_ROOT = '${WORKSPACE}/rssgenerator-static'
+
+# Use only TemporaryFileUploadHandler for uploaded files
+FILE_UPLOAD_HANDLERS = (
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+)
+EOF
 popd
 
 python manage.py migrate
