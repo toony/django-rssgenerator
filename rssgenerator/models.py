@@ -26,22 +26,29 @@ class Items(models.Model):
     
 class Links(models.Model):
     item = models.ForeignKey(Items)
-    link = models.URLField(max_length=1024, null=False)
+    link = models.URLField(max_length=1024, null=True, blank=True)
     height = models.IntegerField(null=True, editable=False)
     width = models.IntegerField(null=True, editable=False)
     storeLocaly = models.BooleanField(default=True)
+    fromUploadedFile = models.BooleanField(default=False, editable=False)
+    
+    def clean(self):
+        if self.fromUploadedFile is True:
+            self.storeLocaly = True
+            self.link = None
 
 import LocalStore
 
 @receiver(post_save, sender=Links)
 def __storeLink(sender, instance, **kwargs):
     link = instance
+
     item = link.item
     if not link.storeLocaly:
         LocalStore.LocalStore(item.rss.id).delete(item.id, link)
         return
 
-    LocalStore.LocalStore(item.rss.id).store(item.id, link)
+    LocalStore.LocalStore(item.rss.id).storeFromLink(item.id, link)
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):

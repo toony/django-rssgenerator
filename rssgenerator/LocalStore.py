@@ -15,6 +15,7 @@ from rssgenerator.tasks import storeLink, createLinkThumbnail
 
 import os
 import magic
+import shutil
 
 class ItemNotFound(Exception):
     """Raise when linkItem path doesn't exists"""
@@ -80,7 +81,10 @@ class LocalStore:
 
         self.__removeItemPath(itemId)
 
-    def store(self, itemId, link):
+    def storeFromLink(self, itemId, link):
+        if link.link is None:
+            return
+
         itemPath = self.__getItemPath(itemId)
         if not os.path.exists(itemPath):
             os.makedirs(itemPath)
@@ -88,6 +92,20 @@ class LocalStore:
         linkFilePath = self.__getLinkFilePath(itemId, link)
         linkFileThumb = self.__getLinkThumbPath(itemId, link)
         storeLink(link.id, link.link, linkFilePath, linkFileThumb)
+
+    def storeFromPath(self, itemId, link, localPath):
+        if not os.path.exists(localPath):
+            return
+
+        itemPath = self.__getItemPath(itemId)
+        if not os.path.exists(itemPath):
+            os.makedirs(itemPath)
+
+        linkFilePath = self.__getLinkFilePath(itemId, link)
+        linkFileThumb = self.__getLinkThumbPath(itemId, link)
+
+        shutil.copy(localPath, linkFilePath)
+        images.createThumb(linkFilePath, linkFileThumb)
 
     def setHeightWidth(self, itemId, link):
         if not link.storeLocaly:
