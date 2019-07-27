@@ -3,7 +3,7 @@ import RssToStream
 import LocalStore
 import random
 
-from django.http import HttpResponse, Http404, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.utils import formats
@@ -24,7 +24,16 @@ def localstoreretrieve(request, rss_id, item_id, link_id):
     link = get_object_or_404(Links, id=link_id)
     localStore = LocalStore.LocalStore(rss_id)
     
-    linkContent = localStore.get(item_id, link, thumb)
+    try:
+        linkContent = localStore.get(item_id, link, thumb)
+    except LocalStore.ItemNotFound:
+        return HttpResponseNotFound("Link id "
+            + str(link.id)
+            + " from item "
+            + str(item_id)
+            + ", rss "
+            + str(rss_id)
+            + " doesn't exists")
 
     return HttpResponse(linkContent['content'], linkContent['type'])
 

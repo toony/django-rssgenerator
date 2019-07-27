@@ -16,6 +16,10 @@ from rssgenerator.tasks import storeLink, createLinkThumbnail
 import os
 import magic
 
+class ItemNotFound(Exception):
+    """Raise when linkItem path doesn't exists"""
+    pass
+
 class LocalStore:
     def __init__(self,
                  rssId):
@@ -36,6 +40,8 @@ class LocalStore:
             return {'content': link.link}
 
         linkItemPath = self.__getLinkFilePath(itemId, link)
+        if not os.path.exists(linkItemPath):
+            raise ItemNotFound
 
         if thumb:
             linkThumbPath = self.__getLinkThumbPath(itemId, link)
