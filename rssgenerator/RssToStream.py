@@ -44,7 +44,7 @@ class RssToStream:
                 RSS2.RSSItem(
                     title = item.title,
                     link = item.link,
-                    description = template.render(context),
+                    description = template.render({'context': context}),
                     guid = RSS2.Guid(item.link),
                     pubDate = item.pub_date)
                 )
