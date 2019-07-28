@@ -6,6 +6,7 @@ from django.dispatch import receiver
 class Rss(models.Model):
     title = models.CharField(max_length=256, null=False)
     description = models.CharField(max_length=256, null=False)
+    private = models.BooleanField(default=False)
     def __unicode__(self):
         return self.title
     

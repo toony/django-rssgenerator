@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.views.generic import DetailView, ListView
 from rssgenerator.models import Rss
-from rssgenerator.views import rssstream, rssgallery, searchItem, itemsummary, itemgallery, localstoreretrieve
+from rssgenerator.views import rssstream, rssdetails, rssgallery, searchItem, itemsummary, itemgallery, localstoreretrieve
 
 urlpatterns = [
     url(r'^$', ListView.as_view(
@@ -9,10 +9,7 @@ urlpatterns = [
         context_object_name='all_rss',
         template_name='rssgenerator/index.html'
         ), name='index'),
-    url(r'^(?P<pk>\d+)/$', DetailView.as_view(
-        model=Rss,
-        template_name='rssgenerator/detail.html'
-        ), name='detail'),
+    url(r'^(?P<rss_id>\d+)/$', rssdetails, name='detail'),
     url(r'^(?P<rss_id>\d+)/rss/$', rssstream, name='rssstream'),
     url(r'^(?P<rss_id>\d+)/gallery$', rssgallery, name='rssgallery'),
     url(r'^(?P<rss_id>\d+)/search$', searchItem, name='searchitem'),
