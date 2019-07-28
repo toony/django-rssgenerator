@@ -38,16 +38,12 @@ class ItemsAdmin(admin.ModelAdmin):
     form = ItemsAdminForm
 
     def save_model(self, request, item, form, change):
-        print("save_model")
         item.save()
 
         for afile in request.FILES.getlist('localFiles'):
-            print(afile.temporary_file_path())
-            print(item.id)
             infos = images.getHeightWidth(afile.temporary_file_path())
             link = Links.objects.create(item_id=item.id, fromUploadedFile=True, height=infos['h'], width=infos['w'])
             
-            print(link.id)
             LocalStore.LocalStore(item.rss.id).storeFromPath(item.id, link, afile.temporary_file_path())
     
 @admin.register(Rss)
