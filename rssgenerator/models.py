@@ -13,7 +13,7 @@ class Rss(models.Model):
 class Items(models.Model):
     rss = models.ForeignKey(Rss)
     title = models.CharField(max_length=256, null=False)
-    link = models.URLField(max_length=1024, null=False)
+    link = models.URLField(max_length=1024, null=True, blank=True)
     pub_date = models.DateTimeField('date published', null=False)
     summary = models.TextField(null=True, blank=True)
     class Meta:
