@@ -105,7 +105,7 @@ class LocalStore:
         linkFileThumb = self.__getLinkThumbPath(itemId, link)
 
         shutil.copy(localPath, linkFilePath)
-        images.createThumb(linkFilePath, linkFileThumb)
+        createLinkThumbnail(linkFilePath, linkFileThumb)
 
     def setHeightWidth(self, itemId, link):
         if not link.storeLocaly:
