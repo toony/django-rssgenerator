@@ -18,15 +18,12 @@ class LinksInline(admin.TabularInline):
         if link.id is None:
             return "-"
         
-        return mark_safe(u'<a href="'
-            + reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id])
-            + '" target="_blank" title="'
-            + str(link.id)
-            + '">'
-            + '<img src="'
-            + reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id])
-            + '?thumb=true" height="40"/>'
-            + '</a>')
+        return mark_safe(u'<a href="%s" target="_blank" title="%s"><img src="%s?thumb=true" height="40"/></a>' %
+            (
+            reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id]),
+            str(link.id),
+            reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id])
+            ))
 
 @admin.register(Items)
 class ItemsAdmin(admin.ModelAdmin):
