@@ -17,7 +17,7 @@ class RssToStream:
                  request,
                  rss):
         self.rootUri = request.build_absolute_uri("/")[:-1]
-        self.rssUri = self.rootUri + "/" + request.build_absolute_uri()
+        self.rssUri = request.build_absolute_uri()
         self.rss = rss
         
     def __toStream(self):
@@ -34,18 +34,17 @@ class RssToStream:
         formatedItems = []
         for item in items:
             template = loader.get_template('rssgenerator/rssItemBody.html')
-            context = Context({
+            context = {
                 'rootUri' : self.rootUri,
                 'description': item.summary,
                 'links': item.links_set.all()
-            })
+            }
             
             formatedItems.append(
                 RSS2.RSSItem(
                     title = item.title,
-                    link = item.link,
-                    description = template.render({'context': context}),
-                    guid = RSS2.Guid(item.link),
+                    description = template.render(context),
+                    guid = RSS2.Guid(str(item.id)),
                     pubDate = item.pub_date)
                 )
 
