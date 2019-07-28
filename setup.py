@@ -30,7 +30,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
-        "Django == 1.8.19",
+        "Django == 1.11.22",
         "PyRSS2Gen >= 1.1",
         "python-magic",
         "django-background-tasks == 1.1.13",
