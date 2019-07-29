@@ -17,9 +17,7 @@ manageDb() {
 }
 
 setUpAllowedHosts() {
-    echo "opop"
     if [ -z "${ALLOWED_HOSTS}" ]; then
-        echo "opop"
         ALLOWED_HOSTS='*'
     fi
     echo ${ALLOWED_HOSTS}
