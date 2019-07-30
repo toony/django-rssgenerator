@@ -33,6 +33,7 @@ class ItemsAdmin(admin.ModelAdmin):
     list_per_page = 50
     save_on_top = True
     form = ItemsAdminForm
+    list_filter = ('rss',)
 
     def save_model(self, request, item, form, change):
         item.save()
