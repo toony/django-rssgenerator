@@ -1,6 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 
 class Rss(models.Model):
@@ -39,6 +39,17 @@ class Links(models.Model):
             self.link = None
 
 import LocalStore
+
+@receiver(pre_save, sender=Items)
+def __updateItemRss(sender, instance, **kwargs):
+    item = instance
+
+    try:
+        oldItem = Items.objects.get(pk=item.id)
+        LocalStore.LocalStore(item.rss.id).storeFromLocalStore(LocalStore.LocalStore(oldItem.rss.id), item.id)
+        print("old: " + str(oldItem.rss.id)+" new: " + str(item.rss.id))
+    except Items.DoesNotExist:
+        pass
 
 @receiver(post_save, sender=Links)
 def __storeLink(sender, instance, **kwargs):

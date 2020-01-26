@@ -14,6 +14,7 @@ from rssgenerator.tools import images
 from rssgenerator.tasks import storeLink, createLinkThumbnail
 
 import os
+import shutil
 import magic
 import shutil
 
@@ -123,3 +124,6 @@ class LocalStore:
             return False
 
         return True
+
+    def storeFromLocalStore(self, srcLocalStore, itemId):
+        shutil.move(srcLocalStore.__getItemPath(itemId), self.__getItemPath(itemId))
