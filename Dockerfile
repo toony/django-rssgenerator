@@ -46,7 +46,7 @@ RUN cd /opt \
     && python setup.py sdist \
     && cd dist \
     && pip install django-rssgenerator-0.17.tar.gz \
-    && pip install gunicorn \
+    && pip install 'gunicorn<20' \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
     && cd /opt/django_rssgenerator/django_rssgenerator \

@@ -34,6 +34,6 @@ setup(
         "PyRSS2Gen >= 1.1",
         "python-magic",
         "django-background-tasks == 1.1.13",
-        "pillow >= 5.1.0",
+        "pillow >= 6.0.0, < 7.0.0",
     ],
 )
