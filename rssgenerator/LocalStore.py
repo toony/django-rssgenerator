@@ -83,6 +83,7 @@ class LocalStore:
         self.__removeItemPath(itemId)
 
     def storeFromLink(self, itemId, link):
+        print("ici LocalStore")
         if link.link is None:
             return
 
@@ -92,7 +93,9 @@ class LocalStore:
 
         linkFilePath = self.__getLinkFilePath(itemId, link)
         linkFileThumb = self.__getLinkThumbPath(itemId, link)
+        print("ici LocalStore")
         storeLink(link.id, link.link, linkFilePath, linkFileThumb)
+        print("ici LocalStore")
 
     def storeFromPath(self, itemId, link, localPath):
         if not os.path.exists(localPath):

@@ -1,15 +1,16 @@
 import json
-import RssToStream
-import LocalStore
 import random, base64
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
 from django.shortcuts import render, get_object_or_404
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import formats
 from django.templatetags.static import static
 from django.db.models import Q
 from django.contrib.auth import authenticate
+
+from rssgenerator.LocalStore import LocalStore, ItemNotFound
+from rssgenerator.RssToStream import RssToStream
 
 from rssgenerator.models import Rss, Items, Links
 
@@ -44,7 +45,7 @@ def rssstream(request, rss_id):
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
     
-    rssToStream = RssToStream.RssToStream(request, rss)
+    rssToStream = RssToStream(request, rss)
     return HttpResponse(rssToStream.display())
 
 def rssdetails(request, rss_id):
@@ -64,11 +65,11 @@ def localstoreretrieve(request, rss_id, item_id, link_id):
         thumb = True
 
     link = get_object_or_404(Links, id=link_id)
-    localStore = LocalStore.LocalStore(rss_id)
+    localStore = LocalStore(rss_id)
     
     try:
         linkContent = localStore.get(item_id, link, thumb)
-    except LocalStore.ItemNotFound:
+    except ItemNotFound:
         return HttpResponseNotFound("Link id "
             + str(link.id)
             + " from item "
@@ -85,7 +86,7 @@ def itemgallery(request, rss_id, item_id):
         return needAuthentication(rss)
     
     item = get_object_or_404(Items, id=item_id)
-    localStore = LocalStore.LocalStore(rss_id)
+    localStore = LocalStore(rss_id)
     
     itemGalleryIndex = []
     for link in item.links_set.all():
@@ -95,7 +96,7 @@ def itemgallery(request, rss_id, item_id):
 
 def getRssgallery(rss_id, itemsIdList):
     rss = get_object_or_404(Rss, id=rss_id)
-    localStore = LocalStore.LocalStore(rss_id)
+    localStore = LocalStore(rss_id)
 
     rssGalleryIndex = []
     for item in rss.items_set.filter(id__in = itemsIdList):
@@ -106,7 +107,7 @@ def getRssgallery(rss_id, itemsIdList):
 
 def getLinkInfo(rssId, itemId, link):
     if not link.storeLocaly \
-       or not LocalStore.LocalStore(rssId).isPresentLocaly(itemId, link):
+       or not LocalStore(rssId).isPresentLocaly(itemId, link):
         linkInfos = { 'src': link.link,
                       'h': 200,
                       'w': 200
@@ -158,7 +159,7 @@ def itemsummary(request, rss_id, item_id):
         link = item.links_set.all()[itemPicPosition:itemPicPosition+1].get()
         
         if not link.storeLocaly \
-           or not LocalStore.LocalStore(rss_id).isPresentLocaly(item.id, link):
+           or not LocalStore(rss_id).isPresentLocaly(item.id, link):
             itemSummary['pic'] = link.link
         else:
             itemSummary['pic'] = reverse('rss:localstoreretrieve',

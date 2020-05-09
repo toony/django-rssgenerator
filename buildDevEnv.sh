@@ -1,8 +1,16 @@
 #!/bin/bash
 
-which virtualenv > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "virtualenv must be installed and accessible from PATH"
+# Check python version
+for pythonbin in python python3; do
+    ${pythonbin} -c 'import sys; exit(1) if sys.version_info.major < 3 or sys.version_info.minor < 5 else exit(0)'
+    if [ $? -eq 0 ]; then
+        PYTHONBIN=${pythonbin}
+        break
+    fi
+done
+
+if [ -z "${PYTHONBIN}" ]; then
+    echo "Python 3.5+ needed!" 1>&2
     exit 1
 fi
 
@@ -14,24 +22,25 @@ pushd .. > /dev/null 2>&1
 WORKSPACE=`pwd`
 GIT_CLONE=${WORKSPACE}"/"${GIT_CLONE}
 
-PYENV=${WORKSPACE}"/rssgenerator-env"
-mkdir -p ${PYENV}
-pushd ${PYENV} > /dev/null 2>&1
+DJANGOENV=${WORKSPACE}"/rssgenerator-djangoenv"
+mkdir -p ${DJANGOENV}
 
 # Create and activate virtualenv
-virtualenv rssgenerator-env
+pushd ${DJANGOENV} > /dev/null 2>&1
+${PYTHONBIN} -m venv rssgenerator-env
 . ./rssgenerator-env/bin/activate
 
 # Install dependencies
-pip install Django==1.11.22 PyRSS2Gen python-magic django-background-tasks==1.1.13 pillow>=5.1.0
+pip install wheel
+pip install 'Django==2.2.12' 'PyRSS2Gen' 'python-magic' 'django-background-tasks==1.2.5' 'pillow>=5.1.0'
 
 # Initialize Django project
 django-admin startproject project
 
-popd
-cp ${GIT_CLONE}"/docker/djangoProjet-urls.py" ${PYENV}"/project/project/urls.py"
+popd > /dev/null 2>&1
+cp ${GIT_CLONE}"/docker/djangoProjet-urls.py" ${DJANGOENV}"/project/project/urls.py"
 
-pushd ${PYENV}"/project" > /dev/null 2>&1
+pushd ${DJANGOENV}"/project" > /dev/null 2>&1
 ln -s ${GIT_CLONE}"/rssgenerator" .
 
 pushd project > /dev/null 2>&1
@@ -45,7 +54,7 @@ FILE_UPLOAD_HANDLERS = (
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 )
 EOF
-popd
+popd > /dev/null 2>&1
 
 python manage.py migrate
 

@@ -1,12 +1,12 @@
 from django.contrib import admin
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.safestring import  mark_safe
 
 from rssgenerator.models import Rss, Items, Links
 from rssgenerator.forms import ItemsAdminForm
 from rssgenerator.tools import images
 
-import LocalStore
+from rssgenerator.LocalStore import LocalStore
 
 class LinksInline(admin.TabularInline):
     model = Links
@@ -43,7 +43,7 @@ class ItemsAdmin(admin.ModelAdmin):
             infos = images.getHeightWidth(afile.temporary_file_path())
             link = Links.objects.create(item_id=item.id, fromUploadedFile=True, height=infos['h'], width=infos['w'])
             
-            LocalStore.LocalStore(item.rss.id).storeFromPath(item.id, link, afile.temporary_file_path())
+            LocalStore(item.rss.id).storeFromPath(item.id, link, afile.temporary_file_path())
     
 @admin.register(Rss)
 class RssAdmin(admin.ModelAdmin):

@@ -11,7 +11,7 @@ class Rss(models.Model):
         return self.title
     
 class Items(models.Model):
-    rss = models.ForeignKey(Rss)
+    rss = models.ForeignKey(Rss, on_delete=models.CASCADE)
     title = models.CharField(max_length=256, null=False)
     link = models.URLField(max_length=1024, null=True, blank=True)
     pub_date = models.DateTimeField('date published', null=False)
@@ -26,7 +26,7 @@ class Items(models.Model):
         return self.links_set.all().count()
     
 class Links(models.Model):
-    item = models.ForeignKey(Items)
+    item = models.ForeignKey(Items, on_delete=models.CASCADE)
     link = models.URLField(max_length=1024, null=True, blank=True)
     height = models.IntegerField(null=True, editable=False)
     width = models.IntegerField(null=True, editable=False)
@@ -38,7 +38,7 @@ class Links(models.Model):
             self.storeLocaly = True
             self.link = None
 
-import LocalStore
+from rssgenerator.LocalStore import LocalStore
 
 @receiver(pre_save, sender=Items)
 def __updateItemRss(sender, instance, **kwargs):
@@ -46,8 +46,7 @@ def __updateItemRss(sender, instance, **kwargs):
 
     try:
         oldItem = Items.objects.get(pk=item.id)
-        LocalStore.LocalStore(item.rss.id).storeFromLocalStore(LocalStore.LocalStore(oldItem.rss.id), item.id)
-        print("old: " + str(oldItem.rss.id)+" new: " + str(item.rss.id))
+        LocalStore(item.rss.id).storeFromLocalStore(LocalStore(oldItem.rss.id), item.id)
     except Items.DoesNotExist:
         pass
 
@@ -57,13 +56,13 @@ def __storeLink(sender, instance, **kwargs):
 
     item = link.item
     if not link.storeLocaly:
-        LocalStore.LocalStore(item.rss.id).delete(item.id, link)
+        LocalStore(item.rss.id).delete(item.id, link)
         return
 
-    LocalStore.LocalStore(item.rss.id).storeFromLink(item.id, link)
+    LocalStore(item.rss.id).storeFromLink(item.id, link)
     
 @receiver(post_delete, sender=Links)
 def __deleteLink(sender, instance, **kwargs):
     link = instance
     item = link.item
-    LocalStore.LocalStore(item.rss.id).delete(item.id, link)
+    LocalStore(item.rss.id).delete(item.id, link)

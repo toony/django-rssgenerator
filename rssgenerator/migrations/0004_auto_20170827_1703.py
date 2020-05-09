@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
-import rssgenerator.LocalStore
+from rssgenerator.LocalStore import LocalStore
 
 def updateLinksHeightWidth(apps, schema_editor):
     Rss = apps.get_model("rssgenerator", "Rss")
@@ -11,7 +11,7 @@ def updateLinksHeightWidth(apps, schema_editor):
     db_alias = schema_editor.connection.alias
     
     for rss in Rss.objects.using(db_alias).all():
-        localStore = rssgenerator.LocalStore.LocalStore(rss.id)
+        localStore = LocalStore(rss.id)
         
         for item in rss.items_set.all():
             for link in item.links_set.all():
