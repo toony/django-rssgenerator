@@ -8,7 +8,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name = 'django-rssgenerator',
-    version = '0.18',
+    version = '1.0',
     packages = ['rssgenerator'],
     include_package_data = True,
     license = 'GNU GPLv3+',
@@ -24,16 +24,16 @@ setup(
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
     ],
     install_requires=[
-        "Django == 1.11.28",
+        "wheel",
+        "Django == 2.2.12",
         "PyRSS2Gen >= 1.1",
         "python-magic",
-        "django-background-tasks == 1.1.13",
-        "pillow >= 6.0.0, < 7.0.0",
+        "django-background-tasks == 1.2.5",
+        "pillow >= 7.0.0",
     ],
 )

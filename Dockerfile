@@ -1,18 +1,18 @@
-FROM debian:jessie
+FROM debian:buster
 MAINTAINER Anthony Prades <toony.github@chezouam.net>
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
     --no-install-recommends \
-    python \
-    virtualenv \
+    python3 \
+    python3-venv \
     nginx \
     supervisor \
     libmagic1 \
-    python-dev \
-    python-setuptools \
+    python3-dev \
+    python3-setuptools \
     build-essential \
-    python-tk \
+    python3-tk \
     libjpeg-dev \
     zlib1g-dev \
     tcl8.6-dev \
@@ -39,13 +39,13 @@ COPY docker/configSettings.py /tmp/configSettings.py
 
 RUN cd /opt \
     && mkdir -p rssgenerator-data \
-    && virtualenv rssgenerator-env \
+    && python3 -m venv rssgenerator-env \
     && mkdir -p /opt/rssgenerator-env/var \
     && . /opt/rssgenerator-env/bin/activate \
     && cd /opt/rssgenerator-src \
     && python setup.py sdist \
     && cd dist \
-    && pip install django-rssgenerator-0.18.tar.gz \
+    && pip install django-rssgenerator-1.0.tar.gz \
     && pip install 'gunicorn<20' \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
@@ -63,10 +63,10 @@ RUN cd /opt \
     && chown -R www-data:www-data /opt/rssgenerator-data
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get remove --purge -yq \
-    python-dev \
-    python-setuptools \
+    python3-dev \
+    python3-setuptools \
     build-essential \
-    python-tk \
+    python3-tk \
     libjpeg-dev \
     zlib1g-dev \
     tcl8.6-dev \
