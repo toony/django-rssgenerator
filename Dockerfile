@@ -9,20 +9,6 @@ RUN apt-get update \
     nginx \
     supervisor \
     libmagic1 \
-    python3-dev \
-    python3-setuptools \
-    build-essential \
-    python3-tk \
-    libjpeg-dev \
-    zlib1g-dev \
-    tcl8.6-dev \
-    tk8.6-dev \
-    libfreetype6-dev \
-    liblcms2-dev \
-    libwebp-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /etc/rssgenerator
@@ -42,11 +28,12 @@ RUN cd /opt \
     && python3 -m venv rssgenerator-env \
     && mkdir -p /opt/rssgenerator-env/var \
     && . /opt/rssgenerator-env/bin/activate \
+    && pip install -U pip wheel \
+    && pip install gunicorn \
     && cd /opt/rssgenerator-src \
-    && python setup.py sdist \
+    && python3 setup.py sdist \
     && cd dist \
     && pip install django-rssgenerator-1.0.tar.gz \
-    && pip install 'gunicorn<20' \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
     && cd /opt/django_rssgenerator/django_rssgenerator \
@@ -57,26 +44,14 @@ RUN cd /opt \
     && cat /tmp/configSettings.py >> settings.py \
     && rm /tmp/configSettings.py \
     && cd /opt/django_rssgenerator \
-    && python manage.py collectstatic --noinput \
+    && python3 manage.py collectstatic --noinput \
     && cd /opt/django_rssgenerator \
     && rm -rf /opt/rssgenerator-src \
     && chown -R www-data:www-data /opt/rssgenerator-data
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get remove --purge -yq \
-    python3-dev \
-    python3-setuptools \
-    build-essential \
-    python3-tk \
-    libjpeg-dev \
-    zlib1g-dev \
-    tcl8.6-dev \
-    tk8.6-dev \
-    libfreetype6-dev \
-    liblcms2-dev \
-    libwebp-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    && apt-get autoremove --purge -yq
+    && apt-get autoremove --purge -yq \
+    && apt-get clean
 
 COPY docker/djangoProjet-urls.py /opt/django_rssgenerator/django_rssgenerator/urls.py
 
