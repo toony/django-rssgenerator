@@ -33,7 +33,7 @@ RUN cd /opt \
     && cd /opt/rssgenerator-src \
     && python3 setup.py sdist \
     && cd dist \
-    && pip install django-rssgenerator-1.0.tar.gz \
+    && pip install django-rssgenerator-1.1.tar.gz \
     && cd /opt \
     && django-admin.py startproject django_rssgenerator \
     && cd /opt/django_rssgenerator/django_rssgenerator \
