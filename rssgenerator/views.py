@@ -38,6 +38,7 @@ def needAuthentication(rss):
     response = HttpResponse()
     response.status_code = 401
     response['WWW-Authenticate'] = 'Basic realm="Rss %s need authentication"' % rss.title
+    response.content = '<html><script>window.location.href = "/";</script></html>'
     return response
 
 def rssStream(request, rss_id):
