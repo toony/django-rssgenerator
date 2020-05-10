@@ -27,3 +27,10 @@ function displayGallery(event) {
         "json"
     );
 }
+
+function setFocus(e, checkBoxId, textBoxId) {
+    var checkBox = document.getElementById(checkBoxId);
+    if (checkBox.checked == true) {
+        document.getElementById(textBoxId).focus();
+    }
+}

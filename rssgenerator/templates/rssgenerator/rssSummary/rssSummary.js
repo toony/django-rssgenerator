@@ -13,7 +13,7 @@ function getGalleryManagerItemsIdList() {
     return galleryManager.itemsIdList;
 }
 
-function search(e){
+function search(e) {
     if(e.keyCode === 13){
         var query = document.getElementById("itemSearch").value;
         $.getJSON("{% url 'rss:searchItem' rss.id %}?q=" + query, function(itemsIdList) {
