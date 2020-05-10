@@ -20,9 +20,9 @@ class LinksInline(admin.TabularInline):
         
         return mark_safe(u'<a href="%s" target="_blank" title="%s"><img src="%s?thumb=true" height="40"/></a>' %
             (
-            reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id]),
+            reverse('rss:localStoreRetrieve', args=[link.item.rss.id, link.item.id, link.id]),
             str(link.id),
-            reverse('rss:localstoreretrieve', args=[link.item.rss.id, link.item.id, link.id])
+            reverse('rss:localStoreRetrieve', args=[link.item.rss.id, link.item.id, link.id])
             ))
 
 @admin.register(Items)

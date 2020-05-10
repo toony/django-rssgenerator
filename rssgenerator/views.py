@@ -40,7 +40,7 @@ def needAuthentication(rss):
     response['WWW-Authenticate'] = 'Basic realm="Rss %s need authentication"' % rss.title
     return response
 
-def rssstream(request, rss_id):
+def rssStream(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
@@ -48,14 +48,14 @@ def rssstream(request, rss_id):
     rssToStream = RssToStream(request, rss)
     return HttpResponse(rssToStream.display())
 
-def rssdetails(request, rss_id):
+def rssSummary(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
 
-    return render(request, 'rssgenerator/detail.html', {"rss": rss})
+    return render(request, 'rssgenerator/rssSummary.html', {"rss": rss})
 
-def localstoreretrieve(request, rss_id, item_id, link_id):
+def localStoreRetrieve(request, rss_id, item_id, link_id):
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
@@ -80,7 +80,7 @@ def localstoreretrieve(request, rss_id, item_id, link_id):
 
     return HttpResponse(linkContent['content'], linkContent['type'])
 
-def itemgallery(request, rss_id, item_id):
+def itemGallery(request, rss_id, item_id):
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
@@ -94,7 +94,7 @@ def itemgallery(request, rss_id, item_id):
     
     return HttpResponse(json.dumps(itemGalleryIndex), content_type="application/json")
 
-def getRssgallery(rss_id, itemsIdList):
+def getRssGallery(rss_id, itemsIdList):
     rss = get_object_or_404(Rss, id=rss_id)
     localStore = LocalStore(rss_id)
 
@@ -113,14 +113,14 @@ def getLinkInfo(rssId, itemId, link):
                       'w': 200
                     }
     else:
-        linkInfos = { 'src': reverse('rss:localstoreretrieve', args=[rssId, itemId, link.id]),
+        linkInfos = { 'src': reverse('rss:localStoreRetrieve', args=[rssId, itemId, link.id]),
                       'h': link.height,
                       'w': link.width
                     }
 
     return linkInfos
 
-def rssgallery(request, rss_id):
+def rssGallery(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
@@ -131,7 +131,7 @@ def rssgallery(request, rss_id):
     if 'itemsIdList[]' not in request.POST:
         return HttpResponseBadRequest('missing mandatory parameter \'itemsIdList[]\'', content_type="text/plain")
 
-    rssGalleryIndex = getRssgallery(rss_id, request.POST.getlist('itemsIdList[]'))
+    rssGalleryIndex = getRssGallery(rss_id, request.POST.getlist('itemsIdList[]'))
 
     if 'random' in request.POST \
         and request.POST['random'] == 'true':
@@ -139,7 +139,7 @@ def rssgallery(request, rss_id):
 
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
-def itemsummary(request, rss_id, item_id):        
+def itemSummary(request, rss_id, item_id):        
     rss = get_object_or_404(Rss, id=rss_id)
     if not isAuthenticated(request, rss):
         return needAuthentication(rss)
@@ -162,11 +162,11 @@ def itemsummary(request, rss_id, item_id):
            or not LocalStore(rss_id).isPresentLocaly(item.id, link):
             itemSummary['pic'] = link.link
         else:
-            itemSummary['pic'] = reverse('rss:localstoreretrieve',
+            itemSummary['pic'] = reverse('rss:localStoreRetrieve',
                                          args=[rss.id, item.id, item.links_set.all()[itemPicPosition:itemPicPosition+1].get().id]) \
                                  + "?thumb=True"
 
-        itemSummary['gallery'] = reverse('rss:itemgallery', args=[rss.id, item.id])
+        itemSummary['gallery'] = reverse('rss:itemGallery', args=[rss.id, item.id])
     else:
         itemSummary['pic'] = static('noLinks.png')
     

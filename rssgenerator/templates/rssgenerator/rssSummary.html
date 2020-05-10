@@ -23,9 +23,9 @@
                     <ul>
                         <li>
                             <div id="drawer-main-actions">
-                                <a title="Main view" class="fa fa-home" href=""></a>
-                                <a title="Slideshow all items" class="fa fa-play" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssgallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList()}})" href="#"></a>
-                                <a title="Slideshow all items randomly" class="fa fa-random" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssgallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList(), 'random': 'true'}})" href="#"></a>
+                                <a title="Back to RSS list" class="fa fa-home" href=""></a>
+                                <a title="Slideshow all items" class="fa fa-play" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssGallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList()}})" href="#"></a>
+                                <a title="Slideshow all items randomly" class="fa fa-random" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssGallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList(), 'random': 'true'}})" href="#"></a>
                             </div>
                         </li>
                         <li>
@@ -33,7 +33,7 @@
                                 <input name="itemSearch" type="text" style="width: 150px;" id="itemSearch" placeholder="Search for items" onkeypress="search(event);"/>
                             </div>
                         </li>
-                        <li><a class="fa fa-rss drawer-entry" href="{% url 'rss:rssstream' rss.id %}">&nbsp; Subscribe</a></li>
+                        <li><a class="fa fa-rss drawer-entry" href="{% url 'rss:rssStream' rss.id %}">&nbsp; Subscribe</a></li>
                     </ul>
                 </nav>
             </div>
@@ -105,46 +105,18 @@
     </div>
     
     <!-- JQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="{% static 'jquery/jquery-3.5.1.min.js' %}"></script>
 
     <!-- Core JS file -->
-    <script src="{% static "PhotoSwipe/photoswipe.min.js" %}"></script>
-
+    <script src="{% static 'PhotoSwipe/photoswipe.min.js' %}"></script>
     <!-- UI JS file -->
-    <script src="{% static "PhotoSwipe/photoswipe-ui-default.min.js" %}"></script>
+    <script src="{% static 'PhotoSwipe/photoswipe-ui-default.min.js' %}"></script>
     
     <!-- RSS Content -->
-    <script src="{% static "itemmanager.js" %}"></script>
-    <script src="{% static "gallerymanager.js" %}"></script>
-    <script src="{% static "common.js" %}"></script>
+    <script src="{% static 'itemmanager.js' %}"></script>
+    <script src="{% static 'gallerymanager.js' %}"></script>
     
-    <script type="text/javascript">
-window.addEventListener('load', onLoad());
-
-function onLoad() {
-    $.getJSON("{% url 'rss:searchitem' rss.id %}?q=", function(itemsIdList) {
-        galleryManager = new GalleryManager("{% url 'rss:detail' rss.id %}");
-        galleryManager.init("{{ rss.title }}", itemsIdList);
-        galleryManager.fill()
-    });
-}
-
-function getGalleryManagerItemsIdList() {
-    return galleryManager.itemsIdList;
-}
-
-function search(e){
-    if(e.keyCode === 13){
-        var query = document.getElementById("itemSearch").value;
-        $.getJSON("{% url 'rss:searchitem' rss.id %}?q=" + query, function(itemsIdList) {
-            galleryManager.init("{{ rss.title }}", itemsIdList);
-            galleryManager.fill()
-        });
-        
-        document.getElementById("itemSearch").value = null;
-        document.getElementById("tag-menu").checked = false;
-    }
-}
-    </script>
+    <script src="{% static 'common.js' %}"></script>
+    {% include 'rssgenerator/rssSummary/rssSummary.js' %}
 </body>
 </html>
