@@ -2,7 +2,7 @@ import json
 import random, base64
 
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseBadRequest
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import formats
 from django.templatetags.static import static
@@ -38,7 +38,7 @@ def needAuthentication(rss):
     response = HttpResponse()
     response.status_code = 401
     response['WWW-Authenticate'] = 'Basic realm="Rss %s need authentication"' % rss.title
-    response.content = '<html><script>window.location.href = "/";</script></html>'
+    response.content = "<html><script>window.location.href=%s;</script></html>" % (reverse('rss:index'))
     return response
 
 def rssStream(request, rss_id):
@@ -186,3 +186,10 @@ def searchItem(request, rss_id):
         ids.append(item["id"])
 
     return HttpResponse(json.dumps(ids), content_type="application/json")
+
+def rsslogout(request, rss_id):
+    rss = get_object_or_404(Rss, id=rss_id)
+    if not rss.private:
+        return redirect('rss:index')
+    
+    return needAuthentication(rss)
