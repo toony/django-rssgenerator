@@ -7,7 +7,7 @@ class Rss(models.Model):
     title = models.CharField(max_length=256, null=False)
     description = models.CharField(max_length=256, null=False)
     private = models.BooleanField(default=False)
-    def __unicode__(self):
+    def __str__(self):
         return self.title
     
 class Items(models.Model):
@@ -19,7 +19,7 @@ class Items(models.Model):
     class Meta:
         ordering = ["-pub_date"]
         
-    def __unicode__(self):
+    def __str__(self):
         return self.title
         
     def linksCount(self):
