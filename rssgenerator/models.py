@@ -37,6 +37,9 @@ class Links(models.Model):
         if self.fromUploadedFile is True:
             self.storeLocaly = True
             self.link = None
+            
+    def __str__(self):
+        return F"({self.id}) {self.width}*{self.height}"
 
 from rssgenerator.LocalStore import LocalStore
 
