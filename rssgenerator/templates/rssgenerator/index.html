@@ -1,15 +1,36 @@
-<html>
-<head></head>
+{% load static %}<!DOCTYPE html>
+<html lang="en_US">
+<head>
+    <link rel="stylesheet" href="{% static "rssSummary.css" %}">
+    <title>RSS summary</title>
+</head>
 
 <body>
+    <header>
+        <div class="header">
+            <span id="galleryTitle" class="title">RSS summary</span>
+            {% if not authenticated %}
+            <span id="authentication" class="authentication">
+                <a href="{% url 'rss:login' %}">Login</a>
+            </span>
+            {% else %}
+            <span id="authentication" class="authentication">
+                <a href="{% url 'rss:logout' %}">Logout</a>
+            </span>
+            {% endif %}
+        </div>
+    </header>
+    
+    <div id="summary">
 {% if all_rss %}
-    <ul>
+        <ul>
     {% for rss in all_rss %}
-        <li><a href="{% url 'rss:rssSummary' rss.id %}">{{ rss.title }}</a></li>
+            <li><a href="{% url 'rss:rssSummary' rss.id %}">{{ rss.title }}</a></li>
     {% endfor %}
-    </ul>
+        </ul>
 {% else %}
-    <p>No RSS stream are available.</p>
+        <p>No RSS stream are available.</p>
 {% endif %}
+    </div>
 </body>
 </html>

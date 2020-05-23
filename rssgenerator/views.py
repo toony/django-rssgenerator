@@ -14,52 +14,49 @@ from rssgenerator.RssToStream import RssToStream
 
 from rssgenerator.models import Rss, Items, Links
 
-def isAuthenticated(request, rss):
-    # If private page do basic auth
-    if rss.private:
-        if request.user.is_authenticated:
-            return True;
+def isAuthenticated(request):
+    if request.user.is_authenticated:
+        return True;
 
-        if 'HTTP_AUTHORIZATION' in request.META:
-            auth = request.META['HTTP_AUTHORIZATION'].split()
-            if len(auth) == 2:
-                if auth[0].lower() == "basic":
-                    uname, passwd = base64.b64decode(auth[1].encode('utf-8')).decode('utf-8').split(':')
-                    user = authenticate(username=uname, password=passwd)
-                    if user is not None and user.is_active:
-                        request.user = user
-                        return True
+    if 'HTTP_AUTHORIZATION' in request.META:
+        auth = request.META['HTTP_AUTHORIZATION'].split()
+        if len(auth) == 2:
+            if auth[0].lower() == "basic":
+                uname, passwd = base64.b64decode(auth[1].encode('utf-8')).decode('utf-8').split(':')
+                user = authenticate(username=uname, password=passwd)
+                if user is not None and user.is_active:
+                    request.user = user
+                    return True
 
-        return False
-    else:
-        return True
-        
-def needAuthentication(rss):
+    return False
+
+    
+def needAuthentication():
     response = HttpResponse()
     response.status_code = 401
-    response['WWW-Authenticate'] = 'Basic realm="Rss %s need authentication"' % rss.title
+    response['WWW-Authenticate'] = 'Basic realm="Rssgenerator authentication"'
     response.content = "<html><script>window.location.href=%s;</script></html>" % (reverse('rss:index'))
     return response
 
 def rssStream(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
     
     rssToStream = RssToStream(request, rss)
     return HttpResponse(rssToStream.display())
 
 def rssSummary(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
 
     return render(request, 'rssgenerator/rssSummary.html', {"rss": rss})
 
 def localStoreRetrieve(request, rss_id, item_id, link_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
     
     thumb = False
     if request.GET.get('thumb', False) in ['true', 'True']:
@@ -83,8 +80,8 @@ def localStoreRetrieve(request, rss_id, item_id, link_id):
 
 def itemGallery(request, rss_id, item_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
     
     item = get_object_or_404(Items, id=item_id)
     localStore = LocalStore(rss_id)
@@ -123,8 +120,8 @@ def getLinkInfo(rssId, itemId, link):
 
 def rssGallery(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
     
     if request.method != 'POST':
         return HttpResponseBadRequest('POST method must be used', content_type="text/plain")
@@ -142,8 +139,8 @@ def rssGallery(request, rss_id):
 
 def itemSummary(request, rss_id, item_id):        
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
     
     item = get_object_or_404(Items, id=item_id)
 
@@ -175,8 +172,8 @@ def itemSummary(request, rss_id, item_id):
 
 def searchItem(request, rss_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if not isAuthenticated(request, rss):
-        return needAuthentication(rss)
+    if rss.private and not isAuthenticated(request):
+        return needAuthentication()
         
     query = request.GET.get('q')
     rss = get_object_or_404(Rss, id=rss_id)
@@ -187,9 +184,21 @@ def searchItem(request, rss_id):
 
     return HttpResponse(json.dumps(ids), content_type="application/json")
 
-def rsslogout(request, rss_id):
-    rss = get_object_or_404(Rss, id=rss_id)
-    if not rss.private:
-        return redirect('rss:index')
+def index(request):
+    allRss = Rss.objects.all()
+    if not isAuthenticated(request):
+        allRss = Rss.objects.all().exclude(private=True)
     
-    return needAuthentication(rss)
+    return render(request, 'rssgenerator/index.html', {"all_rss": allRss, "authenticated": request.user.is_authenticated})
+
+def login(request):
+    if not isAuthenticated(request):
+        return needAuthentication()
+
+    return redirect('rss:index')
+
+def logout(request):
+    if not isAuthenticated(request):
+        return redirect('rss:index')
+
+    return needAuthentication()

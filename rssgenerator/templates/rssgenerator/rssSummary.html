@@ -23,7 +23,11 @@
                     <ul>
                         <li>
                             <div id="drawer-main-actions">
-                                <a title="Back to RSS list" class="fa fa-home" href="{{ rootUri }}{% url 'rss:rsslogout' rss.id %}"></a>
+                                {% if rss.private %}
+                                <a title="Back to RSS list" class="fa fa-home" href="{{ rootUri }}{% url 'rss:login' %}"></a>
+                                {% else %}
+                                <a title="Back to RSS list" class="fa fa-home" href="{{ rootUri }}{% url 'rss:index' %}"></a>
+                                {% endif %}
                                 <a title="Slideshow all items" class="fa fa-play" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssGallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList()}})" href="#"></a>
                                 <a title="Slideshow all items randomly" class="fa fa-random" onclick="displayGallery({ 'data': { 'url': '{% url 'rss:rssGallery' rss.id %}', 'itemsIdList': getGalleryManagerItemsIdList(), 'random': 'true'}})" href="#"></a>
                             </div>
