@@ -176,7 +176,6 @@ def searchItem(request, rss_id):
         return needAuthentication()
         
     query = request.GET.get('q')
-    rss = get_object_or_404(Rss, id=rss_id)
 
     ids = []
     for item in rss.items_set.filter(Q(title__icontains=query) | Q(summary__icontains=query)).values("id").order_by("-pub_date"):
