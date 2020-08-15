@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import reverse
 from django.utils.safestring import  mark_safe
 
-from rssgenerator.models import Rss, Items, Links
+from rssgenerator.models import Rss, Items, Links, Sid
 from rssgenerator.forms import ItemsAdminForm
 from rssgenerator.tools import images
 
@@ -48,3 +48,7 @@ class ItemsAdmin(admin.ModelAdmin):
 @admin.register(Rss)
 class RssAdmin(admin.ModelAdmin):
     list_display = ('title', 'description')
+
+@admin.register(Sid)
+class SidAdmin(admin.ModelAdmin):
+    list_display = ('created', 'sid')

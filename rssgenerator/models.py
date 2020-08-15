@@ -41,6 +41,13 @@ class Links(models.Model):
     def __str__(self):
         return F"({self.id}) {self.width}*{self.height}"
 
+class Sid(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    sid = models.CharField(max_length=256, null=False, unique=True)
+    
+    def __str__(self):
+        return F"{self.created} {self.sid}"
+
 from rssgenerator.LocalStore import LocalStore
 
 @receiver(pre_save, sender=Items)

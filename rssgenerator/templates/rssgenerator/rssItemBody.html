@@ -12,7 +12,9 @@
 	{% else %}
 	<a href="{{ link.link }}">
 	{% endif %}
-	{% if link.storeLocaly %}
+	{% if link.storeLocaly and sid %}
+		<img src="{{ rootUri }}{% url 'rss:localStoreRetrieve' link.item.rss.id link.item.id link.id %}?sid={{ sid }}" />
+	{% elif link.storeLocaly %}
 		<img src="{{ rootUri }}{% url 'rss:localStoreRetrieve' link.item.rss.id link.item.id link.id %}" />
 	{% else %}
 		<img src="{{ link.link }}" />

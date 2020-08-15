@@ -11,6 +11,7 @@ import PyRSS2Gen as RSS2
 
 from django.template import Context, loader
 from rssgenerator.models import Rss
+from rssgenerator.SidManager import SidManager
 
 class RssToStream:
     def __init__(self,
@@ -21,21 +22,27 @@ class RssToStream:
         self.rss = rss
         
     def __toStream(self):
-        items = self.__getRssItems(self.rss.items_set.all())
+        sid = None
+        if self.rss.private:
+            sid = SidManager().create()
+            
+        items = self.__getRssItems(sid, self.rss.items_set.all())
         rssStream = RSS2.RSS2(
                         title = self.rss.title,
                         link = self.rssUri,
                         description = self.rss.description,
                         lastBuildDate = datetime.datetime.now(),
                         items = items)
+
         return rssStream
         
-    def __getRssItems(self, items):
+    def __getRssItems(self, sid, items):
         formatedItems = []
         for item in items:
             template = loader.get_template('rssgenerator/rssItemBody.html')
             context = {
-                'rootUri' : self.rootUri,
+                'sid': sid,
+                'rootUri': self.rootUri,
                 'description': item.summary,
                 'links': item.links_set.all()
             }

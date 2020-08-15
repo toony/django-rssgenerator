@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate
 
 from rssgenerator.LocalStore import LocalStore, ItemNotFound
 from rssgenerator.RssToStream import RssToStream
+from rssgenerator.SidManager import SidManager
 
 from rssgenerator.models import Rss, Items, Links
 
@@ -55,7 +56,9 @@ def rssSummary(request, rss_id):
 
 def localStoreRetrieve(request, rss_id, item_id, link_id):
     rss = get_object_or_404(Rss, id=rss_id)
-    if rss.private and not isAuthenticated(request):
+    if rss.private \
+        and not isAuthenticated(request) \
+        and not SidManager().isValid(request.GET.get('sid', None)):
         return needAuthentication()
     
     thumb = False
