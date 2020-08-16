@@ -23,6 +23,8 @@ class SidManager:
     sidLifetime = 2
     
     def create(self):
+        self.purge()
+        
         sid = Sid()
         sid.sid = uuid.uuid4()
         sid.save()
