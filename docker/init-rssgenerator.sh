@@ -6,6 +6,11 @@ finish() {
     fi
 }
 
+logFile() {
+    touch /var/log/django.log
+    chown www-data:www-data /var/log/django.log
+}
+
 manageDb() {
     . /opt/rssgenerator-env/bin/activate
 
@@ -30,6 +35,7 @@ if [ ! -e /opt/rssgenerator-data/rssgenerator.sqlite3 ]; then
     mode=install
 fi
 
+logFile
 setUpAllowedHosts
 manageDb
 
