@@ -1,7 +1,20 @@
 function displayGallery(event) {
+    var url = event['data']['url'];
     if ('itemsIdList' in event['data']) {
-        getThenDisplayGalleryInfos(event['data']['url'], event['data']['shuffle'], new Array(0), event['data']['itemsIdList'], 0);
+        getThenDisplayGalleryInfos(url, event['data']['shuffle'], new Array(0), event['data']['itemsIdList'], 0);
+        return;
     }
+    
+    $.post(
+        url,
+        {
+            'csrfmiddlewaretoken': $('[name="csrfmiddlewaretoken"]').val(),
+        },
+        function(queryGalleryInfos, textStatus) {
+           displayGalleryInfos(queryGalleryInfos);
+        },
+        "json"
+    );
 }
 
 function getThenDisplayGalleryInfos(url, shuffle, galleryInfos, itemsIdList, startPos) {
