@@ -134,10 +134,6 @@ def rssGallery(request, rss_id):
 
     rssGalleryIndex = getRssGallery(rss_id, request.POST.getlist('itemsIdList[]'))
 
-    if 'random' in request.POST \
-        and request.POST['random'] == 'true':
-        random.shuffle(rssGalleryIndex)
-
     return HttpResponse(json.dumps(rssGalleryIndex), content_type="application/json")
 
 def itemSummary(request, rss_id, item_id):        
