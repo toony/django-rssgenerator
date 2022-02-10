@@ -30,7 +30,7 @@ setup(
     ],
     install_requires=[
         "wheel",
-        "Django == 2.2.22",
+        "Django == 2.2.27",
         "PyRSS2Gen >= 1.1",
         "python-magic",
         "django-background-tasks == 1.2.5",
