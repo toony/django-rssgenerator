@@ -9,6 +9,9 @@ finish() {
 logFile() {
     touch /var/log/django.log
     chown www-data:www-data /var/log/django.log
+
+    [ ! -e /var/log/nginx ] && mkdir -p /var/log/nginx
+    [ ! -e /var/log/supervisor ] && mkdir -p /var/log/supervisor
 }
 
 manageDb() {
