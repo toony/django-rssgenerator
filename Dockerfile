@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 MAINTAINER Anthony Prades <toony.github@chezouam.net>
 
 RUN apt-get update \
